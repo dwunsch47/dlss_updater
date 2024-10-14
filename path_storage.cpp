@@ -4,6 +4,7 @@
 #include <exception>
 #include <fstream>
 #include <vector>
+#include <map>
 
 #if _DEBUG
 #include <iostream>
@@ -35,7 +36,9 @@ void PathStorage::AddNewPaths(const vector<filesystem::path>& new_paths) {
 }
 
 vector<filesystem::path> PathStorage::GetStoredPaths() {
-	return { stored_path_to_recency.begin()->first, stored_path_to_recency.end()->first };
+	vector<filesystem::path> result;
+	transform(stored_path_to_recency.begin(), stored_path_to_recency.end(), back_inserter(result), [](const pair<filesystem::path, bool>& pair) { return pair.first; });
+	return result;
 }
 
 void PathStorage::restoreSavedFilePaths() {
