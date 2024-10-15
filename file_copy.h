@@ -2,9 +2,9 @@
 
 
 #include <filesystem>
-#include <vector>
+#include <map>
 
-void fileCopy(const std::vector<std::filesystem::path>& paths);
+void fileCopy(const std::map<std::filesystem::path, bool>& paths);
 
 
 

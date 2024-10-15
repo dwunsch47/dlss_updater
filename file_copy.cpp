@@ -1,15 +1,15 @@
 #include "file_copy.h"
 
 #include <filesystem>
-#include <vector>
+#include <map>
 
 using namespace std;
 
-void fileCopy(const vector<filesystem::path>& paths) {
+void fileCopy(const map<filesystem::path, bool>& paths) {
 
 	const auto copyOptions = filesystem::copy_options::overwrite_existing;
 
-	for (const filesystem::path& destination : paths) {
-		filesystem::copy("nvngx.dll", destination, copyOptions);
+	for (const auto& [file_path, recency] : paths) {
+		filesystem::copy("nvngx.dll", file_path, copyOptions);
 	}
 }

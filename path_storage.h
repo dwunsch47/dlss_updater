@@ -15,11 +15,11 @@ public:
 	~PathStorage();
 
 	void AddNewPaths(const std::vector<std::filesystem::path>& new_paths);
-	std::vector<std::filesystem::path> GetStoredPaths();
+	const std::map<std::filesystem::path, bool>& GetStoredPaths() const;
 private:
 	std::map<std::filesystem::path, bool> stored_path_to_recency;
 	bool is_changed = false;
 
 	void restoreSavedFilePaths();
-	void saveFilePaths();
+	void saveFilePaths() const;
 };

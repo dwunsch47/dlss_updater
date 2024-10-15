@@ -35,10 +35,8 @@ void PathStorage::AddNewPaths(const vector<filesystem::path>& new_paths) {
 #endif
 }
 
-vector<filesystem::path> PathStorage::GetStoredPaths() {
-	vector<filesystem::path> result;
-	transform(stored_path_to_recency.begin(), stored_path_to_recency.end(), back_inserter(result), [](const pair<filesystem::path, bool>& pair) { return pair.first; });
-	return result;
+const map<filesystem::path, bool>& PathStorage::GetStoredPaths() const {
+	return stored_path_to_recency;
 }
 
 void PathStorage::restoreSavedFilePaths() {
@@ -57,7 +55,7 @@ void PathStorage::restoreSavedFilePaths() {
 #endif
 }
 
-void PathStorage::saveFilePaths() {
+void PathStorage::saveFilePaths() const {
 	if (stored_path_to_recency.empty() || !is_changed) {
 		return;
 	}
