@@ -6,7 +6,8 @@
 #include <vector>
 
 #if _DEBUG
-#include "tests.cpp"
+#include <iostream>
+#include "tests.h"
 #endif
 
 int main(int argc, char* argv[]) {
@@ -14,17 +15,23 @@ int main(int argc, char* argv[]) {
 		return 1;
 	}*/
 
+	const std::string mode = argv[1];
+
 #if _DEBUG
-	
-#endif
-
-	std::vector<std::filesystem::path> new_file_paths;
-	for (int i = 1; i < argc; ++i) {
-		new_file_paths.push_back(argv[i]);
+	if (mode == "test") {
+		TestPathStorage();
+		return 1;
 	}
+#endif
+	if (mode == "add") {
+		std::vector<std::filesystem::path> new_file_paths;
+		for (int i = 2; i < argc; ++i) {
+			new_file_paths.push_back(argv[i]);
+		}
 
-	PathStorage current_storage;
-	current_storage.AddNewPaths(new_file_paths);
+		PathStorage current_storage;
+		current_storage.AddNewPaths(new_file_paths);
 
-	fileCopy(current_storage.GetStoredPaths());
+		fileCopy(current_storage.GetStoredPaths());
+	}
 }
