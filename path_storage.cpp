@@ -16,7 +16,8 @@ PathStorage::PathStorage() {
 	restoreSavedFilePaths();
 }
 
-PathStorage::PathStorage(filesystem::path path_to_config_dir) : config_dir_location_(filesystem::is_directory(path_to_config_dir) ? path_to_config_dir : path_to_config_dir.parent_path()) {
+PathStorage::PathStorage(filesystem::path path_to_config_dir) 
+	: config_dir_location_(filesystem::is_directory(path_to_config_dir) ? path_to_config_dir : path_to_config_dir.parent_path()) {
 	restoreSavedFilePaths();
 }
 
