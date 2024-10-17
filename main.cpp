@@ -6,7 +6,6 @@
 #include <vector>
 
 #if _DEBUG
-#include <iostream>
 #include "tests.h"
 #endif
 
