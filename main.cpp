@@ -5,10 +5,18 @@
 #include <filesystem>
 #include <vector>
 
+#if _DEBUG
+#include "tests.cpp"
+#endif
+
 int main(int argc, char* argv[]) {
 	/*if (argc < 2) {
 		return 1;
 	}*/
+
+#if _DEBUG
+	
+#endif
 
 	std::vector<std::filesystem::path> new_file_paths;
 	for (int i = 1; i < argc; ++i) {
