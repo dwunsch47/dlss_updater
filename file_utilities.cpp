@@ -2,8 +2,6 @@
 
 #include <Windows.h>
 #include <filesystem>
-#include <utility>
-#include <cstdio>
 #include <sstream>
 
 using namespace std;
