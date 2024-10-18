@@ -1,4 +1,5 @@
 #include "tests.h"
+#include "file_utilities.h"
 
 #include <vector>
 #include <filesystem>
