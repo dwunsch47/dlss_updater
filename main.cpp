@@ -31,6 +31,6 @@ int main(int argc, char* argv[]) {
 		PathStorage current_storage;
 		current_storage.AddNewPaths(new_file_paths);
 
-		fileCopy(current_storage.GetStoredPaths());
+		//fileCopy(current_storage.GetStoredPaths());
 	}
 }
