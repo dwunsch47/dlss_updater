@@ -34,9 +34,6 @@ void PathStorage::AddNewPaths(const vector<filesystem::path>& new_paths) {
 	/*for (const filesystem::path& file_path : new_paths) {
 		stored_path_to_recency.emplace(file_path, true);
 	}*/
-#if _DEBUG
-	int num_of_it_elems = 0;
-#endif
 
 	for (filesystem::path file_path : new_paths) {
 		if (!filesystem::exists(file_path) && !filesystem::exists(file_path.parent_path()) && (file_path == filesystem::current_path())) {
@@ -56,10 +53,6 @@ void PathStorage::AddNewPaths(const vector<filesystem::path>& new_paths) {
 		else {
 			filesystem::recursive_directory_iterator recur_file_path_it(file_path);
 			for (const filesystem::path& true_file_path : recur_file_path_it) {
-#if _DEBUG
-				//cout << "Current recur dir: " << recur_file_path_it->path().string() << endl;
-				++num_of_it_elems;
-#endif
 				if (filesystem::is_regular_file(true_file_path) && true_file_path.filename() == DLSS_DLL_NAME) {
 					stored_path_to_recency_.emplace(true_file_path.parent_path(), true);
 					recur_file_path_it.pop();
@@ -70,7 +63,6 @@ void PathStorage::AddNewPaths(const vector<filesystem::path>& new_paths) {
 	}
 
 #if _DEBUG
-	cout << "Number of iterated elements: " << num_of_it_elems << endl;
 	cout << "It added new paths. stored_paths size is " << stored_path_to_recency_.size() << endl;
 	/*cout << "Displaying contents of stored_path_to_recency_:";
 	for (const auto& [curr_disp_path, recency] : stored_path_to_recency_) {
