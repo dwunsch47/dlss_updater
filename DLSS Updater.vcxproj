@@ -109,6 +109,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>version.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -132,11 +133,13 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="path_storage.cpp" />
     <ClCompile Include="tests.cpp" />
+    <ClCompile Include="file_utilities.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="file_copy.h" />
     <ClInclude Include="path_storage.h" />
     <ClInclude Include="tests.h" />
+    <ClInclude Include="file_utilities.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
