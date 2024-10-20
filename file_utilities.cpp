@@ -25,6 +25,5 @@ string GetDLLVersion(const filesystem::path& file_path) {
 
 	ostringstream output;
 	output << HIWORD(fileinfo->dwFileVersionMS) << '.' << LOWORD(fileinfo->dwFileVersionMS) << '.' << HIWORD(fileinfo->dwFileVersionLS) << '.' << LOWORD(fileinfo->dwFileVersionLS);
-	//string output_str = output.str();
 	return output.str();
 }
