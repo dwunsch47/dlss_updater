@@ -89,6 +89,10 @@ const map<filesystem::path, tuple<bool, string>>& PathStorage::GetStoredPaths() 
 	return stored_path_to_recency_version_;
 }
 
+const std::filesystem::path& PathStorage::GetConfigDirPath() const {
+	return config_dir_location_;
+}
+
 void PathStorage::restoreSavedFilePaths() {
 	if (!filesystem::exists(config_dir_location_ / PATH_STORAGE_FILENAME)) {
 		return;

@@ -7,10 +7,6 @@
 #include <string>
 #include <tuple>
 
-const std::string PATH_STORAGE_FILENAME = "dll_locations.txt";
-const std::string DLSS_DLL_NAME = "nvngx_dlss.dll";
-const std::string PROGRAM_NAME = "DLSS Updater";
-
 class PathStorage {
 public:
 	explicit PathStorage();
@@ -22,6 +18,7 @@ public:
 	void RemovePaths(const std::vector<std::filesystem::path>& paths_for_removal);
 
 	const std::map<std::filesystem::path, std::tuple<bool, std::string>>& GetStoredPaths() const;
+	const std::filesystem::path& GetConfigDirPath() const;
 	
 private:
 	std::map <std::filesystem::path, std::tuple<bool, std::string>> stored_path_to_recency_version_;
