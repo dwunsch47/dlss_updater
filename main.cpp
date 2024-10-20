@@ -16,21 +16,24 @@ int main(int argc, char* argv[]) {
 
 	const std::string mode = argv[1];
 
+	PathStorage current_storage;
+
 #if _DEBUG
 	if (mode == "test") {
 		TestPathStorage();
 		return 1;
 	}
 #endif
+
 	if (mode == "add") {
 		std::vector<std::filesystem::path> new_file_paths;
 		for (int i = 2; i < argc; ++i) {
 			new_file_paths.push_back(argv[i]);
 		}
 
-		PathStorage current_storage;
 		current_storage.AddNewPaths(new_file_paths);
-
-		//fileCopy(current_storage.GetStoredPaths());
+	}
+	else if (mode == "update") {
+		fileCopy(current_storage.GetStoredPaths());
 	}
 }
