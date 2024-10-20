@@ -48,13 +48,13 @@ void PathStorage::AddNewPaths(const vector<filesystem::path>& new_paths) {
 		}
 
 		if (filesystem::exists(file_path / DLSS_DLL_NAME)) {
-			stored_path_to_recency_version_.emplace(file_path, true, fileUtil::GetDLLVersion(file_path / DLSS_DLL_NAME));
+			stored_path_to_recency_version_.emplace(file_path, make_tuple(true, fileUtil::GetDLLVersion(file_path / DLSS_DLL_NAME)));
 		}
 		else {
 			filesystem::recursive_directory_iterator recur_file_path_it(file_path);
 			for (const filesystem::path& true_file_path : recur_file_path_it) {
 				if (filesystem::is_regular_file(true_file_path) && true_file_path.filename() == DLSS_DLL_NAME) {
-					stored_path_to_recency_version_.emplace(true_file_path.parent_path(), true, fileUtil::GetDLLVersion(true_file_path));
+					stored_path_to_recency_version_.emplace(true_file_path.parent_path(), make_tuple(true, fileUtil::GetDLLVersion(true_file_path)));
 					recur_file_path_it.pop();
 					recur_file_path_it.disable_recursion_pending();
 				}
@@ -86,7 +86,7 @@ void PathStorage::restoreSavedFilePaths() {
 
 	while (getline(path_storage_file, file_path_str)) {
 		file_path = file_path_str;
-		stored_path_to_recency_version_.emplace(file_path, false, fileUtil::GetDLLVersion(file_path / DLSS_DLL_NAME));
+		stored_path_to_recency_version_.emplace(file_path, make_tuple(false, fileUtil::GetDLLVersion(file_path / DLSS_DLL_NAME)));
 	}
 #if _DEBUG
 	cout << "We succesfully restored paths. Current number of paths is " << stored_path_to_recency_version_.size() << endl;
