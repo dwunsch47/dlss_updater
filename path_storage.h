@@ -24,6 +24,7 @@ public:
 private:
 	std::map <std::filesystem::path, std::tuple<bool, std::string>> stored_path_to_recency_version_;
 	bool is_changed_ = false;
+	bool is_config_properly_formatted_ = false;
 	const std::filesystem::path config_dir_location_ = std::filesystem::current_path();
 
 	void restoreSavedFilePaths();

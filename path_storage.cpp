@@ -86,6 +86,7 @@ void PathStorage::restoreSavedFilePaths() {
 	if (!getline(path_storage_file, tmp_str) || tmp_str != PROGRAM_NAME) {
 		return;
 	}
+	is_config_properly_formatted_ = true;
 
 	filesystem::path file_path;
 
@@ -103,11 +104,11 @@ void PathStorage::saveFilePaths() const {
 		return;
 	}
 	
-	fstream storage_file(config_dir_location_ / PATH_STORAGE_FILENAME, ios::in || ios::out | ios::app);
-	if (storage_file.peek() == ifstream::traits_type::eof()) {
+	fstream storage_file(config_dir_location_ / PATH_STORAGE_FILENAME, ios::out | ios::app);
+	if (filesystem::is_empty(config_dir_location_ / PATH_STORAGE_FILENAME)) {
 		storage_file << PROGRAM_NAME << '\n';
 	}
-	else {
+	else if (!is_config_properly_formatted_) {
 		return;
 	}
 	
