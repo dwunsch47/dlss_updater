@@ -81,11 +81,16 @@ void PathStorage::restoreSavedFilePaths() {
 		return;
 	}
 	fstream path_storage_file(config_dir_location_ / PATH_STORAGE_FILENAME, ios::in);
-	string file_path_str;
+
+	string tmp_str;
+	if (!getline(path_storage_file, tmp_str) || tmp_str != PROGRAM_NAME) {
+		return;
+	}
+
 	filesystem::path file_path;
 
-	while (getline(path_storage_file, file_path_str)) {
-		file_path = file_path_str;
+	while (getline(path_storage_file, tmp_str)) {
+		file_path = tmp_str;
 		stored_path_to_recency_version_.emplace(file_path, make_tuple(false, fileUtil::GetDLLVersion(file_path / DLSS_DLL_NAME)));
 	}
 #if _DEBUG
@@ -98,7 +103,13 @@ void PathStorage::saveFilePaths() const {
 		return;
 	}
 	
-	fstream storage_file(config_dir_location_ / PATH_STORAGE_FILENAME, ios::out | ios::app);
+	fstream storage_file(config_dir_location_ / PATH_STORAGE_FILENAME, ios::in || ios::out | ios::app);
+	if (storage_file.peek() == ifstream::traits_type::eof()) {
+		storage_file << PROGRAM_NAME << '\n';
+	}
+	else {
+		return;
+	}
 	
 	if (storage_file.good()) {
 		for (const auto& [file_path, info] : stored_path_to_recency_version_) {
@@ -110,4 +121,7 @@ void PathStorage::saveFilePaths() const {
 	else {
 		throw runtime_error("file cannot be opened"s);
 	}
+#if _DEBUG
+	cout << "Paths were stored succesfully" << endl;
+#endif
 }

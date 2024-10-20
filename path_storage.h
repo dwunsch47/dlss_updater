@@ -9,6 +9,7 @@
 
 const std::string PATH_STORAGE_FILENAME = "dll_locations.txt";
 const std::string DLSS_DLL_NAME = "nvngx_dlss.dll";
+const std::string PROGRAM_NAME = "DLSS Updater";
 
 class PathStorage {
 public:
