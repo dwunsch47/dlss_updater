@@ -36,7 +36,7 @@ int main(int argc, char* argv[]) {
 		current_storage.AddNewPaths(arguments);
 	} else if (mode == "update") {
 		// TODO: add options to --force-update even is installed version is newer
-		fileCopy(current_storage.GetStoredPaths());
+		fileCopy(current_storage.GetStoredPaths(), current_storage.GetConfigDirPath());
 	}
 	// TODO: add option to --force-keep old, obsolete paths
 	else if (mode == "remove") {
