@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <filesystem>
+#include <tuple>
 #include <fstream>
 #include <iostream>
 #include <cassert>
@@ -43,5 +44,21 @@ void TestPathStorage() {
 		assert(test_storage.GetStoredPaths().size() == 1);
 	}
 
+
+	{
+		cout << "THIRD TEST formatDLLVersion" << endl;
+		tuple<int, int, int, int> test1 = fileUtil::formatDLLVersion("3.7.20.0");
+		tuple<int, int, int, int> test1_result = { 3, 7, 20, 0 };
+		cout << "RESULT: " << get<0>(test1) << '.' << get<1>(test1) << '.' << get<2>(test1) << '.' << get<3>(test1) << endl;
+		assert(test1_result == test1);
+	}
+
+	{
+		cout << "THIRD TEST formatDLLVersion" << endl;
+		tuple<int, int, int, int> test1 = fileUtil::formatDLLVersion("40.228.0.120");
+		tuple<int, int, int, int> test1_result = { 40, 228, 0, 120 };
+		cout << "RESULT: " << get<0>(test1) << '.' << get<1>(test1) << '.' << get<2>(test1) << '.' << get<3>(test1) << endl;
+		assert(test1_result == test1);
+	}
 	filesystem::remove_all(current_working_dir);
 }
