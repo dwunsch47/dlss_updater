@@ -1,9 +1,12 @@
 #include "path_storage.h"
+#include "file_utilities.h"
 
 #include <filesystem>
 #include <exception>
 #include <fstream>
+#include <string>
 #include <vector>
+#include <tuple>
 #include <map>
 
 #if _DEBUG
@@ -30,10 +33,7 @@ void PathStorage::AddNewPaths(const vector<filesystem::path>& new_paths) {
 		return;
 	}
 
-	is_changed = true;
-	/*for (const filesystem::path& file_path : new_paths) {
-		stored_path_to_recency.emplace(file_path, true);
-	}*/
+	is_changed_ = true;
 
 	for (filesystem::path file_path : new_paths) {
 		if (!filesystem::exists(file_path) && !filesystem::exists(file_path.parent_path()) && (file_path == filesystem::current_path())) {
@@ -48,13 +48,13 @@ void PathStorage::AddNewPaths(const vector<filesystem::path>& new_paths) {
 		}
 
 		if (filesystem::exists(file_path / DLSS_DLL_NAME)) {
-			stored_path_to_recency_.emplace(file_path, true);
+			stored_path_to_recency_version_.emplace(file_path, true, fileUtil::GetDLLVersion(file_path / DLSS_DLL_NAME));
 		}
 		else {
 			filesystem::recursive_directory_iterator recur_file_path_it(file_path);
 			for (const filesystem::path& true_file_path : recur_file_path_it) {
 				if (filesystem::is_regular_file(true_file_path) && true_file_path.filename() == DLSS_DLL_NAME) {
-					stored_path_to_recency_.emplace(true_file_path.parent_path(), true);
+					stored_path_to_recency_version_.emplace(true_file_path.parent_path(), true, fileUtil::GetDLLVersion(true_file_path));
 					recur_file_path_it.pop();
 					recur_file_path_it.disable_recursion_pending();
 				}
@@ -63,7 +63,7 @@ void PathStorage::AddNewPaths(const vector<filesystem::path>& new_paths) {
 	}
 
 #if _DEBUG
-	cout << "It added new paths. stored_paths size is " << stored_path_to_recency_.size() << endl;
+	cout << "It added new paths. stored_paths size is " << stored_path_to_recency_version_.size() << endl;
 	/*cout << "Displaying contents of stored_path_to_recency_:";
 	for (const auto& [curr_disp_path, recency] : stored_path_to_recency_) {
 		cout << ' ' << curr_disp_path.string();
@@ -72,8 +72,8 @@ void PathStorage::AddNewPaths(const vector<filesystem::path>& new_paths) {
 #endif
 }
 
-const map<filesystem::path, bool>& PathStorage::GetStoredPaths() const {
-	return stored_path_to_recency_;
+const map<filesystem::path, tuple<bool, string>>& PathStorage::GetStoredPaths() const {
+	return stored_path_to_recency_version_;
 }
 
 void PathStorage::restoreSavedFilePaths() {
@@ -81,27 +81,28 @@ void PathStorage::restoreSavedFilePaths() {
 		return;
 	}
 	fstream path_storage_file(config_dir_location_ / PATH_STORAGE_FILENAME, ios::in);
+	string file_path_str;
+	filesystem::path file_path;
 
-	string file_path;
-
-	while (getline(path_storage_file, file_path)) {
-		stored_path_to_recency_.emplace(file_path, false);
+	while (getline(path_storage_file, file_path_str)) {
+		file_path = file_path_str;
+		stored_path_to_recency_version_.emplace(file_path, false, fileUtil::GetDLLVersion(file_path / DLSS_DLL_NAME));
 	}
 #if _DEBUG
-	cout << "We succesfully restored paths. Current number of paths is " << stored_path_to_recency_.size() << endl;
+	cout << "We succesfully restored paths. Current number of paths is " << stored_path_to_recency_version_.size() << endl;
 #endif
 }
 
 void PathStorage::saveFilePaths() const {
-	if (stored_path_to_recency_.empty() || !is_changed) {
+	if (stored_path_to_recency_version_.empty() || !is_changed_) {
 		return;
 	}
 	
 	fstream storage_file(config_dir_location_ / PATH_STORAGE_FILENAME, ios::out | ios::app);
 	
 	if (storage_file.good()) {
-		for (const auto& [file_path, is_recent] : stored_path_to_recency_) {
-			if (is_recent) {
+		for (const auto& [file_path, info] : stored_path_to_recency_version_) {
+			if (get<0>(info)) { // check whetever current path is recent and wasn't saved before
 				storage_file << file_path.string() << '\n';
 			}
 		}
