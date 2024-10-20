@@ -15,6 +15,13 @@ int main(int argc, char* argv[]) {
 	}*/
 
 	const std::string mode = argv[1];
+	std::vector<std::filesystem::path> arguments;
+
+	if (argc > 2) {
+		for (int i = 2; i < argc; ++i) {
+			arguments.push_back(argv[i]);
+		}
+	}
 
 	PathStorage current_storage;
 
@@ -26,14 +33,11 @@ int main(int argc, char* argv[]) {
 #endif
 
 	if (mode == "add") {
-		std::vector<std::filesystem::path> new_file_paths;
-		for (int i = 2; i < argc; ++i) {
-			new_file_paths.push_back(argv[i]);
-		}
-
-		current_storage.AddNewPaths(new_file_paths);
-	}
-	else if (mode == "update") {
+		current_storage.AddNewPaths(arguments);
+	} else if (mode == "update") {
 		fileCopy(current_storage.GetStoredPaths());
+	}
+	else if (mode == "remove") {
+		current_storage.RemovePaths(arguments);
 	}
 }
