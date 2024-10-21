@@ -49,7 +49,6 @@ namespace fileUtil {
 		prev_pos = pos;
 		pos = file_version.find('.', prev_pos);
 		build_num_ver = stoi(file_version.substr(prev_pos, pos++ - prev_pos));
-		prev_pos = pos;
 
 		tuple<int, int, int, int> result = { major_ver, minor_ver, bug_ver, build_num_ver };
 
