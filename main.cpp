@@ -23,14 +23,14 @@ int main(int argc, char* argv[]) {
 		}
 	}
 
-	PathStorage current_storage;
-
 #if _DEBUG
 	if (mode == "test") {
 		TestPathStorage();
 		return 1;
 	}
 #endif
+
+	PathStorage current_storage;
 
 	if (mode == "add") {
 		current_storage.AddNewPaths(arguments);
