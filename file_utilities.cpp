@@ -31,20 +31,28 @@ namespace fileUtil {
 		return output.str();
 	}
 
-	tuple<int, int, int, int> formatDLLVersion(const string& file_version) {
-
+	tuple<int, int, int, int> formatDLLVersion(const string file_version) {
+		int major_ver = 0, minor_ver = 0, bug_ver = 0, build_num_ver = 0;
 		if (file_version == "error") {
 			return { 0, 0, 0, 0 };
 		}
-		vector<int> major_minor_bug_build;
-		major_minor_bug_build.reserve(4);
-		size_t pos = 0, prev_pos = 0;
-		for (int i = 0; i < 4; ++i) {
-			pos = file_version.find('.', prev_pos);
-			major_minor_bug_build.push_back(stoi(file_version.substr(prev_pos, pos++ - prev_pos)));
-			prev_pos = pos;
-		}
 		
-		return { major_minor_bug_build[0], major_minor_bug_build[1], major_minor_bug_build[2], major_minor_bug_build[3] };
+		size_t pos = 0, prev_pos = 0;
+		pos = file_version.find('.', prev_pos);
+		major_ver = stoi(file_version.substr(prev_pos, pos++ - prev_pos));
+		prev_pos = pos;
+		pos = file_version.find('.', prev_pos);
+		minor_ver = stoi(file_version.substr(prev_pos, pos++ - prev_pos));
+		prev_pos = pos;
+		pos = file_version.find('.', prev_pos);
+		bug_ver = stoi(file_version.substr(prev_pos, pos++ - prev_pos));
+		prev_pos = pos;
+		pos = file_version.find('.', prev_pos);
+		build_num_ver = stoi(file_version.substr(prev_pos, pos++ - prev_pos));
+		prev_pos = pos;
+
+		tuple<int, int, int, int> result = { major_ver, minor_ver, bug_ver, build_num_ver };
+
+		return result;
 	}
 }
