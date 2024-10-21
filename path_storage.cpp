@@ -44,7 +44,7 @@ void PathStorage::AddNewPaths(const vector<filesystem::path>& new_paths) {
 			file_path = file_path.parent_path();
 		}
 		else if (!filesystem::is_directory(file_path)) {
-			throw runtime_error("given path is neither a directory, nor a regular file: " + file_path.string());
+			continue;
 		}
 
 		if (filesystem::exists(file_path / DLSS_DLL_NAME)) {
