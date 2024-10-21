@@ -28,7 +28,7 @@ PathStorage::~PathStorage() {
 	saveFilePaths();
 }
 
-void PathStorage::AddNewPaths(const vector<filesystem::path>& new_paths) {
+void PathStorage::AddNewPaths(vector<filesystem::path> new_paths) {
 	if (new_paths.empty()) {
 		return;
 	}
@@ -72,7 +72,7 @@ void PathStorage::AddNewPaths(const vector<filesystem::path>& new_paths) {
 #endif
 }
 
-void PathStorage::RemovePaths(const vector<filesystem::path>& paths_for_removal) {
+void PathStorage::RemovePaths(vector<filesystem::path> paths_for_removal) {
 	if (paths_for_removal.empty()) {
 		return;
 	}
@@ -99,7 +99,7 @@ void PathStorage::restoreSavedFilePaths() {
 	}
 
 	fstream path_storage_file(config_dir_location_ / PATH_STORAGE_FILENAME, ios::in);
-	if (path_storage_file.good()) {
+	if (!path_storage_file.good()) {
 		throw runtime_error(PATH_STORAGE_FILENAME + " cannot be opened");
 	}
 

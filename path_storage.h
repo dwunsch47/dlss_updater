@@ -14,8 +14,8 @@ public:
 
 	~PathStorage();
 
-	void AddNewPaths(const std::vector<std::filesystem::path>& new_paths);
-	void RemovePaths(const std::vector<std::filesystem::path>& paths_for_removal);
+	void AddNewPaths(std::vector<std::filesystem::path> new_paths);
+	void RemovePaths(std::vector<std::filesystem::path> paths_for_removal);
 
 	const std::map<std::filesystem::path, std::tuple<bool, std::string>>& GetStoredPaths() const;
 	const std::filesystem::path& GetDLLPath() const;
