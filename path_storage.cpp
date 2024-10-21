@@ -20,7 +20,7 @@ PathStorage::PathStorage() {
 }
 
 PathStorage::PathStorage(filesystem::path path_to_dll) 
-	: dll_location_(filesystem::is_directory(path_to_dll) ? path_to_dll : path_to_dll.parent_path()) {
+	: dll_dir_path_(filesystem::is_directory(path_to_dll) ? path_to_dll : path_to_dll.parent_path()) {
 	restoreSavedFilePaths();
 }
 
@@ -90,15 +90,15 @@ const map<filesystem::path, tuple<bool, string>>& PathStorage::GetStoredPaths() 
 }
 
 std::filesystem::path PathStorage::GetDLLPath() const {
-	return dll_location_;
+	return dll_dir_path_;
 }
 
 void PathStorage::restoreSavedFilePaths() {
-	if (!filesystem::exists(config_dir_location_ / PATH_STORAGE_FILENAME)) {
+	if (!filesystem::exists(config_dir_path_ / PATH_STORAGE_FILENAME)) {
 		return;
 	}
 
-	fstream path_storage_file(config_dir_location_ / PATH_STORAGE_FILENAME, ios::in);
+	fstream path_storage_file(config_dir_path_ / PATH_STORAGE_FILENAME, ios::in);
 	if (!path_storage_file.good()) {
 		throw runtime_error(PATH_STORAGE_FILENAME + " cannot be opened");
 	}
@@ -134,7 +134,7 @@ void PathStorage::saveFilePaths() const {
 
 	const auto fstream_options = (are_any_lines_for_deletion_ ? ios::out : (ios::out | ios::app));
 	
-	fstream storage_file(config_dir_location_ / PATH_STORAGE_FILENAME, fstream_options);
+	fstream storage_file(config_dir_path_ / PATH_STORAGE_FILENAME, fstream_options);
 	if (!storage_file.good()) {
 		throw runtime_error("file cannot be opened"s);
 	}
@@ -142,7 +142,7 @@ void PathStorage::saveFilePaths() const {
 	cout << "Storage file was opened" << endl;
 #endif
 
-	if (filesystem::is_empty(config_dir_location_ / PATH_STORAGE_FILENAME)) {
+	if (filesystem::is_empty(config_dir_path_ / PATH_STORAGE_FILENAME)) {
 		storage_file << PROGRAM_NAME << '\n';
 	}
 	else if (!is_config_properly_formatted_) {

@@ -25,8 +25,8 @@ private:
 	bool new_paths_added_ = false;
 	bool is_config_properly_formatted_ = false;
 	bool are_any_lines_for_deletion_ = false;
-	const std::filesystem::path config_dir_location_ = std::filesystem::current_path();
-	std::filesystem::path dll_location_ = config_dir_location_;
+	const std::filesystem::path config_dir_path_ = std::filesystem::current_path();
+	std::filesystem::path dll_dir_path_ = config_dir_path_;
 
 	void restoreSavedFilePaths();
 	void saveFilePaths() const;
