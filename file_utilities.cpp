@@ -28,7 +28,7 @@ namespace fileUtil {
 
 		ostringstream output;
 		output << HIWORD(fileinfo->dwFileVersionMS) << '.' << LOWORD(fileinfo->dwFileVersionMS) << '.' << HIWORD(fileinfo->dwFileVersionLS) << '.' << LOWORD(fileinfo->dwFileVersionLS);
-		return output.str();
+		return move(output.str());
 	}
 
 	tuple<int, int, int, int> formatDLLVersion(const string file_version) {
