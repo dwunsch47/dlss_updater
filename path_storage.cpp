@@ -99,8 +99,11 @@ void PathStorage::restoreSavedFilePaths() {
 	}
 
 	fstream path_storage_file(config_dir_location_ / PATH_STORAGE_FILENAME, ios::in);
-	string tmp_str;
+	if (path_storage_file.good()) {
+		throw runtime_error(PATH_STORAGE_FILENAME + " cannot be opened");
+	}
 
+	string tmp_str;
 	if (!getline(path_storage_file, tmp_str) || tmp_str != PROGRAM_NAME) {
 		return;
 	}
