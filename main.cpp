@@ -34,7 +34,11 @@ int main(int argc, char* argv[]) {
 
 	if (mode == "add") {
 		current_storage.AddNewPaths(arguments);
-	} else if (mode == "update") {
+	}
+	else if (mode == "path_to_dll") {
+
+	}
+	else if (mode == "update") {
 		// TODO: add options to --force-update even is installed version is newer
 		fileCopy(current_storage.GetStoredPaths(), current_storage.GetDLLPath());
 	}
