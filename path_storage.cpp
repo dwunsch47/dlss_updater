@@ -19,8 +19,8 @@ PathStorage::PathStorage() {
 	restoreSavedFilePaths();
 }
 
-PathStorage::PathStorage(filesystem::path path_to_config_dir) 
-	: config_dir_location_(filesystem::is_directory(path_to_config_dir) ? path_to_config_dir : path_to_config_dir.parent_path()) {
+PathStorage::PathStorage(filesystem::path path_to_dll) 
+	: dll_location_(filesystem::is_directory(path_to_dll) ? path_to_dll : path_to_dll.parent_path()) {
 	restoreSavedFilePaths();
 }
 
@@ -89,8 +89,8 @@ const map<filesystem::path, tuple<bool, string>>& PathStorage::GetStoredPaths() 
 	return stored_path_to_recency_version_;
 }
 
-const std::filesystem::path& PathStorage::GetConfigDirPath() const {
-	return config_dir_location_;
+const std::filesystem::path& PathStorage::GetDLLPath() const {
+	return dll_location_;
 }
 
 void PathStorage::restoreSavedFilePaths() {
