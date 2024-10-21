@@ -89,7 +89,7 @@ const map<filesystem::path, tuple<bool, string>>& PathStorage::GetStoredPaths() 
 	return stored_path_to_recency_version_;
 }
 
-const std::filesystem::path& PathStorage::GetDLLPath() const {
+std::filesystem::path PathStorage::GetDLLPath() const {
 	return dll_location_;
 }
 

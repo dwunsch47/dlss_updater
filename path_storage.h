@@ -18,7 +18,7 @@ public:
 	void RemovePaths(std::vector<std::filesystem::path> paths_for_removal);
 
 	const std::map<std::filesystem::path, std::tuple<bool, std::string>>& GetStoredPaths() const;
-	const std::filesystem::path& GetDLLPath() const;
+	std::filesystem::path GetDLLPath() const;
 	
 private:
 	std::map <std::filesystem::path, std::tuple<bool, std::string>> stored_path_to_recency_version_;
