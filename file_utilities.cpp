@@ -9,7 +9,7 @@
 using namespace std;
 
 namespace fileUtil {
-	string getDLLVersion(const filesystem::path& file_path) {
+	string getDLLVersion(filesystem::path file_path) {
 		DWORD dwHandle, dwLen = GetFileVersionInfoSizeA(file_path.string().c_str(), &dwHandle);
 		if (dwLen == 0) {
 			return "error";
