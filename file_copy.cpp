@@ -28,4 +28,17 @@ void fileCopy(const map<filesystem::path, std::tuple<bool, std::string>>& paths,
 			}
 		}
 	}
+
+	bool copy_was_successful = true;
+	for (const auto& [file_path, info] : paths) {
+		file_path_version = fileUtil::formatDLLVersion(fileUtil::getDLLVersion(file_path / DLSS_DLL_NAME));
+
+		if (dll_version != file_path_version) {
+			copy_was_successful = false;
+			cerr << "This dll didn't update: " << file_path / DLSS_DLL_NAME << endl;
+		}
+	}
+	if (copy_was_successful) {
+		cout << "All files were updated to " << fileUtil::getDLLVersion(dll_path / DLSS_DLL_NAME) << endl;
+	}
 }
