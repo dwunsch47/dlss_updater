@@ -1,13 +1,13 @@
 #include "path_storage.h"
 #include "file_utilities.h"
 
+#include <unordered_map>
 #include <filesystem>
 #include <exception>
 #include <fstream>
 #include <string>
 #include <vector>
 #include <tuple>
-#include <map>
 
 #if _DEBUG
 #include <iostream>
@@ -85,7 +85,7 @@ void PathStorage::RemovePaths(vector<filesystem::path> paths_for_removal) {
 	}
 }
 
-const map<filesystem::path, tuple<bool, string>>& PathStorage::GetStoredPaths() const {
+const unordered_map<filesystem::path, tuple<bool, string>>& PathStorage::GetStoredPaths() const {
 	return stored_path_to_recency_version_;
 }
 

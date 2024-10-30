@@ -3,7 +3,7 @@
 #include <fstream>
 #include <filesystem>
 #include <vector>
-#include <map>
+#include <unordered_map>
 #include <string>
 #include <tuple>
 
@@ -17,11 +17,11 @@ public:
 	void AddNewPaths(std::vector<std::filesystem::path> new_paths);
 	void RemovePaths(std::vector<std::filesystem::path> paths_for_removal);
 
-	const std::map<std::filesystem::path, std::tuple<bool, std::string>>& GetStoredPaths() const;
+	const std::unordered_map<std::filesystem::path, std::tuple<bool, std::string>>& GetStoredPaths() const;
 	std::filesystem::path GetDLLPath() const;
 	
 private:
-	std::map <std::filesystem::path, std::tuple<bool, std::string>> stored_path_to_recency_version_;
+	std::unordered_map <std::filesystem::path, std::tuple<bool, std::string>> stored_path_to_recency_version_;
 	bool new_paths_added_ = false;
 	bool is_config_properly_formatted_ = false;
 	bool are_any_lines_for_deletion_ = false;

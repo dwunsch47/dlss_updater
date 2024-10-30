@@ -1,16 +1,16 @@
 #include "file_copy.h"
 #include "file_utilities.h"
 
+#include <unordered_map>
 #include <filesystem>
 #include <algorithm>
 #include <iostream>
 #include <string>
 #include <tuple>
-#include <map>
 
 using namespace std;
 
-void fileCopy(const map<filesystem::path, std::tuple<bool, std::string>>& paths, const filesystem::path dll_path) {
+void fileCopy(const unordered_map<filesystem::path, std::tuple<bool, std::string>>& paths, const filesystem::path dll_path) {
 	const tuple<int, int, int, int> dll_version = fileUtil::formatDLLVersion(fileUtil::getDLLVersion(dll_path / DLSS_DLL_NAME));
 	const uintmax_t dll_size = filesystem::file_size(dll_path / DLSS_DLL_NAME);
 
