@@ -18,6 +18,19 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="source\file_copy.cpp" />
+    <ClCompile Include="source\file_utilities.cpp" />
+    <ClCompile Include="source\main.cpp" />
+    <ClCompile Include="source\path_storage.cpp" />
+    <ClCompile Include="source\tests.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="source\file_copy.h" />
+    <ClInclude Include="source\file_utilities.h" />
+    <ClInclude Include="source\path_storage.h" />
+    <ClInclude Include="source\tests.h" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
@@ -132,19 +145,6 @@
       <AdditionalDependencies>version.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClCompile Include="file_copy.cpp" />
-    <ClCompile Include="main.cpp" />
-    <ClCompile Include="path_storage.cpp" />
-    <ClCompile Include="tests.cpp" />
-    <ClCompile Include="file_utilities.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="file_copy.h" />
-    <ClInclude Include="path_storage.h" />
-    <ClInclude Include="tests.h" />
-    <ClInclude Include="file_utilities.h" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

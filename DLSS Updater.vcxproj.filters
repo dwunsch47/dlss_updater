@@ -15,33 +15,33 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp">
+    <ClCompile Include="source\file_copy.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="file_copy.cpp">
+    <ClCompile Include="source\file_utilities.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="path_storage.cpp">
+    <ClCompile Include="source\main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="tests.cpp">
+    <ClCompile Include="source\path_storage.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="file_utilities.cpp">
+    <ClCompile Include="source\tests.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="file_copy.h">
+    <ClInclude Include="source\file_utilities.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="path_storage.h">
+    <ClInclude Include="source\path_storage.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="tests.h">
+    <ClInclude Include="source\tests.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="file_utilities.h">
+    <ClInclude Include="source\file_copy.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
