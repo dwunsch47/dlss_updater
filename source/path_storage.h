@@ -3,9 +3,9 @@
 #include <fstream>
 #include <filesystem>
 #include <vector>
-#include <unordered_map>
 #include <string>
 #include <tuple>
+#include <unordered_set>
 
 class PathStorage {
 public:
@@ -15,19 +15,19 @@ public:
 	~PathStorage();
 
 	void AddNewPaths(std::vector<std::filesystem::path> new_paths);
-	void RemovePaths(std::vector<std::filesystem::path> paths_for_removal);
+	void RemovePaths(const std::vector<std::filesystem::path>& paths_for_removal);
 
-	const std::unordered_map<std::filesystem::path, std::tuple<bool, std::string>>& GetStoredPaths() const;
+	const std::unordered_set<std::filesystem::path>& GetStoredPaths() const;
 	std::filesystem::path GetDLLPath() const;
 	
 private:
-	std::unordered_map <std::filesystem::path, std::tuple<bool, std::string>> stored_path_to_recency_version_;
+	std::unordered_set<std::filesystem::path> stored_paths_;
 	bool new_paths_added_ = false;
 	bool is_config_properly_formatted_ = false;
-	bool are_any_lines_for_deletion_ = false;
-	const std::filesystem::path config_dir_path_ = std::filesystem::current_path();
-	std::filesystem::path dll_dir_path_ = config_dir_path_;
+	std::filesystem::path dll_dir_path_ = std::filesystem::current_path();
 
 	void restoreSavedFilePaths();
-	void saveFilePaths() const;
+	void savePathsAndConfig() const;
+	void savePaths() const;
+	void saveConfig() const;
 };
