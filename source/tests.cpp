@@ -12,10 +12,10 @@
 using namespace std;
 
 void TestPathStorage() {
-	if (filesystem::exists(PATH_STORAGE_FILENAME)) {
+	if (filesystem::exists(PATH_STORAGE_FILENAME) && !filesystem::exists(PATH_STORAGE_FILENAME + ".orig")) {
 		filesystem::rename(PATH_STORAGE_FILENAME, (PATH_STORAGE_FILENAME + ".orig"));
 	}
-	if (filesystem::exists(DLSS_DLL_NAME)) {
+	if (filesystem::exists(DLSS_DLL_NAME) && !filesystem::exists(DLSS_DLL_NAME + ".orig")) {
 		filesystem::rename(DLSS_DLL_NAME, (DLSS_DLL_NAME + ".orig"));
 	}
 	const filesystem::path root_dir = filesystem::current_path();
@@ -26,7 +26,7 @@ void TestPathStorage() {
 		filesystem::remove(PATH_STORAGE_FILENAME);
 		cout << "FIRST TEST" << endl;
 
-		filesystem::path test_dir = current_working_dir / "testdir1";
+		filesystem::path test_dir = current_working_dir / "test1_dir";
 		filesystem::create_directory(test_dir);
 		fstream first_file(test_dir / DLSS_DLL_NAME, ios::out);
 		vector<filesystem::path> test_paths = { test_dir };
@@ -40,7 +40,7 @@ void TestPathStorage() {
 		filesystem::remove(PATH_STORAGE_FILENAME);
 		cout << "SECOND TEST" << endl;
 
-		const filesystem::path test_dir = current_working_dir / "testdir2";
+		const filesystem::path test_dir = current_working_dir / "test2_dir";
 		filesystem::create_directory(test_dir);
 		fstream first_file(test_dir / DLSS_DLL_NAME, ios::out);
 		vector<filesystem::path> test_paths = { test_dir, test_dir / DLSS_DLL_NAME };
@@ -60,11 +60,40 @@ void TestPathStorage() {
 	}
 
 	{
-		cout << "THIRD TEST formatDLLVersion" << endl;
+		cout << "FOURTH TEST formatDLLVersion" << endl;
 		tuple<int, int, int, int> test1 = fileUtil::formatDLLVersion("40.228.0.120");
 		tuple<int, int, int, int> test1_result = { 40, 228, 0, 120 };
 		cout << "RESULT: " << get<0>(test1) << '.' << get<1>(test1) << '.' << get<2>(test1) << '.' << get<3>(test1) << endl;
 		assert(test1_result == test1);
+	}
+
+	{
+		cout << "FIFTH TEST AddNewPaths" << endl;
+		filesystem::remove(PATH_STORAGE_FILENAME);
+
+		filesystem::path test_dir = current_working_dir / "test5_dir";
+		filesystem::create_directory(test_dir);
+		vector<filesystem::path> paths = {
+			test_dir.string() + "/example1/Engine/Plugins/Marketplace/some_company/DLL/Binaries/ThirdParty/Win64",
+			test_dir.string() + "/example2",
+			test_dir.string() + "/example3/Game/DLL",
+			test_dir.string() + "/example4/example4/Plugins/some_company/DLL/Binaries/ThirdParty/Win64",
+			test_dir.string() + "/example5/mods/mod/smth"
+		};
+		for (const auto& path_to_create : paths) {
+			filesystem::create_directories(path_to_create);
+			fstream curr_file(path_to_create / DLSS_DLL_NAME, ios::out);
+		}
+
+		PathStorage test1;
+		test1.AddNewPaths(paths);
+		assert(test1.GetStoredPaths().size() == paths.size());
+
+		PathStorage test2;
+		test2.AddNewPaths({ test_dir });
+		assert(test2.GetStoredPaths().size() == paths.size());
+
+
 	}
 	
 	filesystem::remove_all(current_working_dir);
