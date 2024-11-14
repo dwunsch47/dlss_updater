@@ -55,7 +55,7 @@ void TestPathStorage() {
 		cout << "THIRD TEST formatDLLVersion" << endl;
 		tuple<int, int, int, int> test1 = fileUtil::formatDLLVersion("3.7.20.0");
 		tuple<int, int, int, int> test1_result = { 3, 7, 20, 0 };
-		cout << "RESULT: " << get<0>(test1) << '.' << get<1>(test1) << '.' << get<2>(test1) << '.' << get<3>(test1) << endl;
+		cout << "result: " << get<0>(test1) << '.' << get<1>(test1) << '.' << get<2>(test1) << '.' << get<3>(test1) << endl;
 		assert(test1_result == test1);
 	}
 
@@ -63,7 +63,7 @@ void TestPathStorage() {
 		cout << "FOURTH TEST formatDLLVersion" << endl;
 		tuple<int, int, int, int> test1 = fileUtil::formatDLLVersion("40.228.0.120");
 		tuple<int, int, int, int> test1_result = { 40, 228, 0, 120 };
-		cout << "RESULT: " << get<0>(test1) << '.' << get<1>(test1) << '.' << get<2>(test1) << '.' << get<3>(test1) << endl;
+		cout << "result: " << get<0>(test1) << '.' << get<1>(test1) << '.' << get<2>(test1) << '.' << get<3>(test1) << endl;
 		assert(test1_result == test1);
 	}
 
@@ -93,7 +93,9 @@ void TestPathStorage() {
 		test2.AddNewPaths({ test_dir });
 		assert(test2.GetStoredPaths().size() == paths.size());
 
-
+		PathStorage test3;
+		test3.AddNewPaths({ root_dir });
+		assert(test3.GetStoredPaths().size() == (paths.size() + 2));
 	}
 	
 	filesystem::remove_all(current_working_dir);
