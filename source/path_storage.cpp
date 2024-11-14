@@ -58,8 +58,7 @@ void PathStorage::AddNewPaths(vector<filesystem::path> new_paths) {
 			stored_paths_.insert(file_path);
 		}
 		else {
-			filesystem::directory_iterator dir_it(file_path);
-			for (auto& curr_dir_path : dir_it) {
+			for (auto& curr_dir_path : filesystem::directory_iterator(file_path)) {
 				dir_futur.push_back(async(launch::async, &PathStorage::checkDirectoryPath, this, curr_dir_path));
 			}
 		}
