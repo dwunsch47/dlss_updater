@@ -8,6 +8,8 @@
 #include <string>
 #include <vector>
 #include <tuple>
+#include <mutex>
+#include <future>
 
 #include <toml.hpp>
 
@@ -37,6 +39,8 @@ void PathStorage::AddNewPaths(vector<filesystem::path> new_paths) {
 
 	new_paths_added_ = true;
 
+	vector<future<void>> dir_futur;
+
 	for (filesystem::path file_path : new_paths) {
 		if (!filesystem::exists(file_path) && !filesystem::exists(file_path.parent_path()) && (file_path == filesystem::current_path())) {
 			continue;
@@ -50,18 +54,19 @@ void PathStorage::AddNewPaths(vector<filesystem::path> new_paths) {
 		}
 
 		if (filesystem::exists(file_path / DLSS_DLL_NAME)) {
+			std::lock_guard stored_paths_lock(mutex_stored_paths_);
 			stored_paths_.insert(file_path);
 		}
 		else {
-			filesystem::recursive_directory_iterator recur_file_path_it(file_path);
-			for (const filesystem::path& true_file_path : recur_file_path_it) {
-				if (filesystem::is_regular_file(true_file_path) && true_file_path.filename() == DLSS_DLL_NAME) {
-					stored_paths_.insert(true_file_path.parent_path());
-					recur_file_path_it.pop();
-					recur_file_path_it.disable_recursion_pending();
-				}
+			filesystem::directory_iterator dir_it(file_path);
+			for (auto& curr_dir_path : dir_it) {
+				dir_futur.push_back(async(launch::async, &PathStorage::checkDirectoryPath, this, curr_dir_path));
 			}
 		}
+	}
+
+	for (auto& task : dir_futur) {
+		task.wait();
 	}
 
 #if _DEBUG
@@ -72,6 +77,17 @@ void PathStorage::AddNewPaths(vector<filesystem::path> new_paths) {
 	}
 	cout << endl;*/
 #endif
+}
+
+void PathStorage::checkDirectoryPath(filesystem::path dir_path) {
+	filesystem::recursive_directory_iterator recur_file_path_it(dir_path);
+	for (const filesystem::path& true_file_path : recur_file_path_it) {
+		if (filesystem::is_regular_file(true_file_path) && true_file_path.filename() == DLSS_DLL_NAME) {
+			std::lock_guard stored_paths_lock(mutex_stored_paths_);
+			stored_paths_.insert(true_file_path.parent_path());
+			recur_file_path_it.disable_recursion_pending();
+		}
+	}
 }
 
 void PathStorage::RemovePaths(const vector<filesystem::path>& paths_for_removal) {

@@ -5,6 +5,7 @@
 #include <vector>
 #include <string>
 #include <tuple>
+#include <mutex>
 #include <unordered_set>
 
 class PathStorage {
@@ -22,6 +23,7 @@ public:
 	
 private:
 	std::unordered_set<std::filesystem::path> stored_paths_;
+	std::mutex mutex_stored_paths_;
 	bool new_paths_added_ = false;
 	bool is_config_properly_formatted_ = false;
 	std::filesystem::path dll_dir_path_ = std::filesystem::current_path();
@@ -30,4 +32,6 @@ private:
 	void savePathsAndConfig() const;
 	void savePaths() const;
 	void saveConfig() const;
+
+	void checkDirectoryPath(std::filesystem::path dir_path);
 };
