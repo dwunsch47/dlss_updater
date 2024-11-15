@@ -1,3 +1,6 @@
 [submodule "dependencies/toml11"]
 	path = dependencies/toml11
 	url = https://github.com/ToruNiina/toml11.git
+[submodule "dependencies/ValveFileVDF"]
+	path = dependencies/ValveFileVDF
+	url = https://github.com/TinyTinni/ValveFileVDF.git
