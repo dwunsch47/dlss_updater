@@ -95,7 +95,7 @@ void TestPathStorage() {
 
 		PathStorage test3;
 		test3.AddNewPaths({ root_dir });
-		assert(test3.GetStoredPaths().size() == (paths.size() + 2));
+		assert(test3.GetStoredPaths().size() == (paths.size() + 2)); // because first and second tests create aditional dll's
 	}
 	
 	filesystem::remove_all(current_working_dir);
