@@ -6,6 +6,8 @@
 #include <string>
 #include <tuple>
 
+#include <WinReg.hpp>
+
 using namespace std;
 
 namespace fileUtil {
@@ -53,5 +55,24 @@ namespace fileUtil {
 		tuple<int, int, int, int> result = { major_ver, minor_ver, bug_ver, build_num_ver };
 
 		return result;
+	}
+
+	string getSteamappPath() {
+		winreg::RegKey key;
+		const auto open_result = key.TryOpen(HKEY_LOCAL_MACHINE, L"SOFTWARE\\Wow6432Node\\Valve\\Steam");
+		if (!open_result) {
+			return "";
+		}
+		if (key.ContainsValue(L"InstallPath")) {
+			const auto val_open_result = key.TryGetStringValue(L"InstallPath");
+			if (val_open_result.IsValid()) {
+				const wstring regVal = val_open_result.GetValue();
+				int str_size = WideCharToMultiByte(CP_UTF8, 0, regVal.data(), (int)regVal.size(), NULL, 0, NULL, NULL);
+				std::string str_result(str_size, 0);
+				WideCharToMultiByte(CP_UTF8, 0, regVal.data(), (int)regVal.size(), str_result.data(), str_size, NULL, NULL);
+				return str_result;
+			}
+		}
+		return "";
 	}
 }
