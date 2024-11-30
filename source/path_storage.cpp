@@ -146,7 +146,7 @@ void PathStorage::savePaths() const {
 
 	fstream dll_path_storage_file(PATH_STORAGE_FILENAME, ios::out);
 	if (!dll_path_storage_file.good()) {
-		throw runtime_error(PATH_STORAGE_FILENAME + " cannot be oppened");
+		throw runtime_error(PATH_STORAGE_FILENAME + " cannot be opened");
 	}
 
 	toml::value config_toml;
