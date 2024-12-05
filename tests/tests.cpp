@@ -1,5 +1,6 @@
 #include "tests.h"
-#include "file_utilities.h"
+#include "app/file_utilities.h"
+#include "app/path_storage.h"
 
 #include <vector>
 #include <filesystem>
@@ -18,9 +19,10 @@ void TestPathStorage() {
 	if (filesystem::exists(DLSS_DLL_NAME) && !filesystem::exists(DLSS_DLL_NAME + ".orig")) {
 		filesystem::rename(DLSS_DLL_NAME, (DLSS_DLL_NAME + ".orig"));
 	}
-	const filesystem::path root_dir = filesystem::current_path();
+	const filesystem::path curr_path_dir = filesystem::current_path();
+	const filesystem::path root_dir = curr_path_dir / "all_tests_dir";
 	const filesystem::path current_working_dir = root_dir / "test_dir";
-	filesystem::create_directory(current_working_dir);
+	filesystem::create_directories(current_working_dir);
 
 	{
 		filesystem::remove(PATH_STORAGE_FILENAME);
@@ -94,11 +96,11 @@ void TestPathStorage() {
 		assert(test2.GetStoredPaths().size() == paths.size());
 
 		PathStorage test3;
-		test3.AddNewPaths({ root_dir });
+		test3.AddNewPaths({ current_working_dir });
 		assert(test3.GetStoredPaths().size() == (paths.size() + 2)); // because first and second tests create aditional dll's
 	}
-	
-	filesystem::remove_all(current_working_dir);
+	filesystem::remove(curr_path_dir / PATH_STORAGE_FILENAME);
+	filesystem::remove_all(root_dir);
 
 	if (filesystem::exists(PATH_STORAGE_FILENAME + ".orig")) {
 		filesystem::rename((PATH_STORAGE_FILENAME + ".orig"), PATH_STORAGE_FILENAME);

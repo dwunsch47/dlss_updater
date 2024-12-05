@@ -1,19 +1,33 @@
 #include "file_copy.h"
 #include "path_storage.h"
+#include "gui/main_window.h"
 
 #include <iostream>
 #include <filesystem>
 #include <vector>
 
+#include <qapplication>
+
 #if _DEBUG
-#include "tests.h"
+#include "../tests/tests.h"
 #endif
 
 int main(int argc, char* argv[]) {
-	/*if (argc < 2) {
-		return 1;
-	}*/
 
+#if _DEBUG
+	TestPathStorage();
+#endif
+
+	QApplication a(argc, argv);
+	QtWidgetsApplication1 w;
+	w.show();
+	return a.exec();
+
+
+
+
+}
+/*
 	const std::string mode = argv[1];
 	std::vector<std::filesystem::path> arguments;
 
@@ -23,7 +37,10 @@ int main(int argc, char* argv[]) {
 		}
 	}
 
+	std::cout << "Began app" << std::endl;
+
 #if _DEBUG
+	std::cout << "Running tests" << std::endl;
 	if (mode == "test") {
 		TestPathStorage();
 		return 1;
@@ -46,4 +63,4 @@ int main(int argc, char* argv[]) {
 	else if (mode == "remove") {
 		current_storage.RemovePaths(arguments);
 	}
-}
+}*/

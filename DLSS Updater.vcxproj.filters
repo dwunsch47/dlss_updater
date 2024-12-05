@@ -13,36 +13,70 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Header Files\app">
+      <UniqueIdentifier>{d4c7080b-4989-4717-880a-142ace178761}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\gui">
+      <UniqueIdentifier>{56e89e43-99fe-4006-b589-edd5ea3e5912}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\gui">
+      <UniqueIdentifier>{96e763e5-a887-4ded-bddb-74b681c96efe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\app">
+      <UniqueIdentifier>{27def135-996f-4b20-8e2d-e7b982395d94}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\tests">
+      <UniqueIdentifier>{c604b06e-6104-4e97-931d-a9c38046fc77}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\gui">
+      <UniqueIdentifier>{eae6bf76-cd11-40d4-b50b-d8f65272368e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\tests">
+      <UniqueIdentifier>{1eb7059e-df05-4ab1-a1ee-ca9ccd0c9bc3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="source\file_copy.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="source\file_utilities.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="source\main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="source\path_storage.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="source\tests.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
+    <ClInclude Include="src\app\file_copy.h">
+      <Filter>Header Files\app</Filter>
+    </ClInclude>
+    <ClInclude Include="src\app\file_utilities.h">
+      <Filter>Header Files\app</Filter>
+    </ClInclude>
+    <ClInclude Include="src\app\path_storage.h">
+      <Filter>Header Files\app</Filter>
+    </ClInclude>
+    <ClInclude Include="tests\tests.h">
+      <Filter>Header Files\tests</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="source\file_utilities.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="source\path_storage.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="source\tests.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="source\file_copy.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
+    <QtMoc Include="src\gui\main_window.h">
+      <Filter>Header Files\gui</Filter>
+    </QtMoc>
+  </ItemGroup>
+  <ItemGroup>
+    <QtUic Include="src\gui\main_window.ui">
+      <Filter>Resource Files\gui</Filter>
+    </QtUic>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\app\file_copy.cpp">
+      <Filter>Source Files\app</Filter>
+    </ClCompile>
+    <ClCompile Include="src\app\file_utilities.cpp">
+      <Filter>Source Files\app</Filter>
+    </ClCompile>
+    <ClCompile Include="src\app\main.cpp">
+      <Filter>Source Files\app</Filter>
+    </ClCompile>
+    <ClCompile Include="src\app\path_storage.cpp">
+      <Filter>Source Files\app</Filter>
+    </ClCompile>
+    <ClCompile Include="src\gui\main_window.cpp">
+      <Filter>Source Files\gui</Filter>
+    </ClCompile>
+    <ClCompile Include="tests\tests.cpp">
+      <Filter>Source Files\tests</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
