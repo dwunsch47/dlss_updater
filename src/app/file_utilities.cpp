@@ -68,7 +68,7 @@ namespace fileUtil {
 			if (val_open_result.IsValid()) {
 				const wstring regVal = val_open_result.GetValue();
 				int str_size = WideCharToMultiByte(CP_UTF8, 0, regVal.data(), (int)regVal.size(), NULL, 0, NULL, NULL);
-				std::string str_result(str_size, 0);
+				string str_result(str_size, 0);
 				WideCharToMultiByte(CP_UTF8, 0, regVal.data(), (int)regVal.size(), str_result.data(), str_size, NULL, NULL);
 				return str_result;
 			}
