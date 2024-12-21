@@ -13,6 +13,11 @@
 
 #include <toml.hpp>
 
+#pragma warning(push)
+#pragma warning(disable : 4996)
+#include <vdf_parser.hpp>
+#pragma warning(pop)
+
 #if _DEBUG
 #include <iostream>
 #endif
@@ -98,6 +103,36 @@ void PathStorage::RemovePaths(const vector<filesystem::path>& paths_for_removal)
 		if (stored_paths_.find(file_path) != stored_paths_.end()) {
 			stored_paths_.erase(file_path);
 		}
+	}
+}
+
+void PathStorage::ScanSteamFolder() {
+	vector<filesystem::path> steam_folders = parseVdf(fileUtil::getSteamappPath());
+	if (steam_folders.empty()) {
+		return;
+	}
+	AddNewPaths(steam_folders);
+}
+
+vector<filesystem::path> PathStorage::parseVdf(const filesystem::path path) const {
+	const filesystem::path vdf_path = path / LIBRARY_FOLDERS_PATH;
+	if (!filesystem::exists(vdf_path)) {
+		return {};
+	}
+	std::ifstream vdf_file(vdf_path);
+	auto root = tyti::vdf::read(vdf_file);
+	if (root.name == "libraryfolders") {
+		vector<filesystem::path> result;
+		result.reserve(root.childs.size());
+		filesystem::path tmp_path;
+		for (const auto& [field_name, ptr] : root.childs) {
+			tmp_path = ptr->attribs["path"];
+			result.push_back(tmp_path / STEAM_GAMES_PATH_POSTFIX);
+		}
+		return result;
+	}
+	else {
+		return {};
 	}
 }
 

@@ -22,8 +22,8 @@ int main(int argc, char* argv[]) {
 	std::cout << "Began app" << std::endl;
 
 #if _DEBUG
-	std::cout << "Running tests" << std::endl;
 	if (mode == "test") {
+		std::cout << "Running tests" << std::endl;
 		TestPathStorage();
 		return 1;
 	}
@@ -31,7 +31,11 @@ int main(int argc, char* argv[]) {
 
 	PathStorage current_storage;
 
-	if (mode == "add") {
+
+	if (mode == "scan") {
+		current_storage.ScanSteamFolder();
+	}
+	else if (mode == "add") {
 		current_storage.AddNewPaths(arguments);
 	}
 	else if (mode == "path_to_dll") {

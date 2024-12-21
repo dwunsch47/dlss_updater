@@ -8,6 +8,9 @@
 #include <mutex>
 #include <unordered_set>
 
+const std::string STEAM_GAMES_PATH_POSTFIX = "steamapps\\common";
+const std::string LIBRARY_FOLDERS_PATH = "steamapps\\libraryfolders.vdf";
+
 class PathStorage {
 public:
 	explicit PathStorage();
@@ -17,6 +20,8 @@ public:
 
 	void AddNewPaths(std::vector<std::filesystem::path> new_paths);
 	void RemovePaths(const std::vector<std::filesystem::path>& paths_for_removal);
+
+	void ScanSteamFolder();
 
 	const std::unordered_set<std::filesystem::path>& GetStoredPaths() const;
 	std::filesystem::path GetDLLPath() const;
@@ -34,4 +39,6 @@ private:
 	void saveConfig() const;
 
 	void checkDirectoryPath(std::filesystem::path dir_path);
+
+	std::vector<std::filesystem::path> parseVdf(const std::filesystem::path path) const;
 };
