@@ -19,9 +19,9 @@ int main(int argc, char* argv[]) {
 		}
 	}
 
+#if _DEBUG
 	std::cout << "Began app" << std::endl;
 
-#if _DEBUG
 	if (mode == "test") {
 		std::cout << "Running tests" << std::endl;
 		TestPathStorage();
@@ -33,7 +33,7 @@ int main(int argc, char* argv[]) {
 
 
 	if (mode == "scan") {
-		current_storage.ScanSteamFolder();
+		current_storage.ScanForGameServices();
 	}
 	else if (mode == "add") {
 		current_storage.AddNewPaths(arguments);
@@ -48,5 +48,8 @@ int main(int argc, char* argv[]) {
 	// TODO: add option to --force-keep old, obsolete paths
 	else if (mode == "remove") {
 		current_storage.RemovePaths(arguments);
+	}
+	else if (mode == "show") {
+
 	}
 }
