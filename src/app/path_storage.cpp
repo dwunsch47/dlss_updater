@@ -106,7 +106,11 @@ void PathStorage::RemovePaths(const vector<filesystem::path>& paths_for_removal)
 	}
 }
 
-void PathStorage::ScanSteamFolder() {
+void PathStorage::ScanForGameServices() {
+	scanSteamFolder();
+}
+
+void PathStorage::scanSteamFolder() {
 	vector<filesystem::path> steam_folders = parseVdf(fileUtil::getSteamappPath());
 	if (steam_folders.empty()) {
 		return;
@@ -156,7 +160,7 @@ void PathStorage::restoreSavedFilePaths() {
 	}
 
 	filesystem::path tmp_path;
-	for (const auto file_path : path_storage_file.at("dll_paths").as_array()) {
+	for (const auto& file_path : path_storage_file.at("dll_paths").as_array()) {
 		tmp_path = file_path.as_string();
 		if (filesystem::exists(tmp_path / DLSS_DLL_NAME)) {
 			stored_paths_.emplace(tmp_path);
@@ -189,7 +193,7 @@ void PathStorage::savePaths() const {
 
 
 	toml::value path_storage_toml(toml::array{});
-	for (const auto file_path : stored_paths_) {
+	for (const auto& file_path : stored_paths_) {
 		path_storage_toml.push_back(file_path.generic_string());
 	}
 

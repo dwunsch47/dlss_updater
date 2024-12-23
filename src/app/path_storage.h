@@ -21,9 +21,9 @@ public:
 	void AddNewPaths(std::vector<std::filesystem::path> new_paths);
 	void RemovePaths(const std::vector<std::filesystem::path>& paths_for_removal);
 
-	void ScanSteamFolder();
+	void ScanForGameServices();
 
-	const std::unordered_set<std::filesystem::path>& GetStoredPaths() const;
+	const std::unordered_set<std::filesystem::path>&GetStoredPaths() const;
 	std::filesystem::path GetDLLPath() const;
 	
 private:
@@ -40,5 +40,6 @@ private:
 
 	void checkDirectoryPath(std::filesystem::path dir_path);
 
+	void scanSteamFolder();
 	std::vector<std::filesystem::path> parseVdf(const std::filesystem::path path) const;
 };
