@@ -10,6 +10,7 @@
 #include <tuple>
 #include <mutex>
 #include <future>
+#include <iostream>
 
 #include <toml.hpp>
 
@@ -17,10 +18,6 @@
 #pragma warning(disable : 4996)
 #include <vdf_parser.hpp>
 #pragma warning(pop)
-
-#if _DEBUG
-#include <iostream>
-#endif
 
 using namespace std;
 
@@ -146,6 +143,24 @@ const unordered_set<filesystem::path>& PathStorage::GetStoredPaths() const {
 
 std::filesystem::path PathStorage::GetDLLPath() const {
 	return dll_dir_path_;
+}
+
+void PathStorage::ShowStoredDllsVersions() const {
+	if (stored_paths_.empty()) {
+		cout << "No game folders with DLSS were added. Use \"scan\" or \"add\" to add folders";
+		return;
+	}
+	if (filesystem::exists(dll_dir_path_ / DLSS_DLL_NAME)) {
+		cout << "Latest available DLSS version is: " << fileUtil::getDLLVersion(dll_dir_path_ / DLSS_DLL_NAME) << '\n';
+	}
+
+	filesystem::path full_dll_path;
+	for (const auto& file_path : stored_paths_) {
+		full_dll_path = file_path / DLSS_DLL_NAME;
+		if (filesystem::exists(full_dll_path)) {;
+			cout << '"' << full_dll_path.generic_string() << "\", version: " << fileUtil::getDLLVersion(full_dll_path) << "\n";
+		}
+	}
 }
 
 void PathStorage::restoreSavedFilePaths() {

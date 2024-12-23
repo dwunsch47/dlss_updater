@@ -50,6 +50,6 @@ int main(int argc, char* argv[]) {
 		current_storage.RemovePaths(arguments);
 	}
 	else if (mode == "show") {
-
+		current_storage.ShowStoredDllsVersions();
 	}
 }

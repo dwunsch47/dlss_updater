@@ -25,6 +25,8 @@ public:
 
 	const std::unordered_set<std::filesystem::path>&GetStoredPaths() const;
 	std::filesystem::path GetDLLPath() const;
+
+	void ShowStoredDllsVersions() const;
 	
 private:
 	std::unordered_set<std::filesystem::path> stored_paths_;
