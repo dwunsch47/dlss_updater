@@ -14,11 +14,6 @@
 
 #include <toml.hpp>
 
-#pragma warning(push)
-#pragma warning(disable : 4996)
-#include <vdf_parser.hpp>
-#pragma warning(pop)
-
 using namespace std;
 
 PathStorage::PathStorage() {
@@ -34,7 +29,7 @@ PathStorage::~PathStorage() {
 	savePathsAndConfig();
 }
 
-void PathStorage::AddNewPaths(vector<filesystem::path> new_paths) {
+void PathStorage::AddNewPaths(const vector<filesystem::path>& new_paths) {
 	if (new_paths.empty()) {
 		return;
 	}
@@ -80,7 +75,7 @@ void PathStorage::AddNewPaths(vector<filesystem::path> new_paths) {
 #endif
 }
 
-void PathStorage::checkDirectoryPath(filesystem::path dir_path) {
+void PathStorage::checkDirectoryPath(const filesystem::path& dir_path) {
 	filesystem::recursive_directory_iterator recur_file_path_it(dir_path);
 	for (const filesystem::path& true_file_path : recur_file_path_it) {
 		if (filesystem::is_regular_file(true_file_path) && true_file_path.filename() == DLSS_DLL_NAME) {
@@ -108,33 +103,11 @@ void PathStorage::ScanForGameServices() {
 }
 
 void PathStorage::scanSteamFolder() {
-	vector<filesystem::path> steam_folders = parseVdf(fileUtil::getSteamappPath());
+	vector<filesystem::path> steam_folders = fileUtil::parseVdf(fileUtil::getPathFromRegistry(launcher_name_to_data_.at("steam").reg_path, launcher_name_to_data_.at("steam").reg_value));
 	if (steam_folders.empty()) {
 		return;
 	}
 	AddNewPaths(steam_folders);
-}
-
-vector<filesystem::path> PathStorage::parseVdf(const filesystem::path path) const {
-	const filesystem::path vdf_path = path / LIBRARY_FOLDERS_PATH;
-	if (!filesystem::exists(vdf_path)) {
-		return {};
-	}
-	std::ifstream vdf_file(vdf_path);
-	auto root = tyti::vdf::read(vdf_file);
-	if (root.name == "libraryfolders") {
-		vector<filesystem::path> result;
-		result.reserve(root.childs.size());
-		filesystem::path tmp_path;
-		for (const auto& [field_name, ptr] : root.childs) {
-			tmp_path = ptr->attribs["path"];
-			result.push_back(tmp_path / STEAM_GAMES_PATH_POSTFIX);
-		}
-		return result;
-	}
-	else {
-		return {};
-	}
 }
 
 const unordered_set<filesystem::path>& PathStorage::GetStoredPaths() const {

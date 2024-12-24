@@ -7,9 +7,12 @@
 #include <tuple>
 #include <mutex>
 #include <unordered_set>
+#include <unordered_map>
 
-const std::string STEAM_GAMES_PATH_POSTFIX = "steamapps\\common";
-const std::string LIBRARY_FOLDERS_PATH = "steamapps\\libraryfolders.vdf";
+struct GameLauncherData {
+	std::wstring reg_path;
+	std::wstring reg_value;
+};
 
 class PathStorage {
 public:
@@ -18,12 +21,12 @@ public:
 
 	~PathStorage();
 
-	void AddNewPaths(std::vector<std::filesystem::path> new_paths);
+	void AddNewPaths(const std::vector<std::filesystem::path>& new_paths);
 	void RemovePaths(const std::vector<std::filesystem::path>& paths_for_removal);
 
 	void ScanForGameServices();
 
-	const std::unordered_set<std::filesystem::path>&GetStoredPaths() const;
+	const std::unordered_set<std::filesystem::path>& GetStoredPaths() const;
 	std::filesystem::path GetDLLPath() const;
 
 	void ShowStoredDllsVersions() const;
@@ -35,13 +38,17 @@ private:
 	bool is_config_properly_formatted_ = false;
 	std::filesystem::path dll_dir_path_ = std::filesystem::current_path();
 
+	const std::unordered_map<std::string, GameLauncherData> launcher_name_to_data_ = {
+		{ "steam", { L"SOFTWARE\\Wow6432Node\\Valve\\Steam", L"InstallPath" } },
+		{ "egs", { L"SOFTWARE\\WOW6432Node\\Epic Games\\EpicGamesLauncher", L"AppDataPath" }}
+	};
+
 	void restoreSavedFilePaths();
 	void savePathsAndConfig() const;
 	void savePaths() const;
 	void saveConfig() const;
 
-	void checkDirectoryPath(std::filesystem::path dir_path);
+	void checkDirectoryPath(const std::filesystem::path& dir_path);
 
 	void scanSteamFolder();
-	std::vector<std::filesystem::path> parseVdf(const std::filesystem::path path) const;
 };
