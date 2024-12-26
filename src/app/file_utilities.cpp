@@ -81,25 +81,31 @@ namespace fileUtil {
 		return "";
 	}
 
-	vector<filesystem::path> parseVdf(const filesystem::path& path) {
-		const filesystem::path vdf_path = path / LIBRARY_FOLDERS_PATH;
-		if (!filesystem::exists(vdf_path)) {
-			return {};
-		}
-		std::ifstream vdf_file(vdf_path);
-		auto root = tyti::vdf::read(vdf_file);
-		vdf_file.close();
-		if (root.name == "libraryfolders") {
-			vector<filesystem::path> result;
-			result.reserve(root.childs.size());
-			filesystem::path tmp_path;
-			for (const auto& [field_name, ptr] : root.childs) {
-				tmp_path = ptr->attribs["path"];
-				result.push_back(tmp_path / STEAM_GAMES_PATH_POSTFIX);
+	namespace parsers {
+		vector<filesystem::path> parseVdf(const filesystem::path& file_path) {
+			const filesystem::path vdf_path = file_path / LIBRARY_FOLDERS_PATH;
+			if (!filesystem::exists(vdf_path)) {
+				return {};
 			}
-			return result;
+			std::ifstream vdf_file(vdf_path);
+			auto root = tyti::vdf::read(vdf_file);
+			vdf_file.close();
+			if (root.name == "libraryfolders") {
+				vector<filesystem::path> result;
+				result.reserve(root.childs.size());
+				filesystem::path tmp_path;
+				for (const auto& [field_name, ptr] : root.childs) {
+					tmp_path = ptr->attribs["path"];
+					result.push_back(tmp_path / STEAM_GAMES_PATH_POSTFIX);
+				}
+				return result;
+			}
+			else {
+				return {};
+			}
 		}
-		else {
+
+		vector<filesystem::path> parseIndex(const filesystem::path& file_path) {
 			return {};
 		}
 	}

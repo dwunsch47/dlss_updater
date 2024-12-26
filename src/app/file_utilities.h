@@ -17,5 +17,8 @@ namespace fileUtil {
 
 	std::string getPathFromRegistry(const std::wstring& reg_path, const std::wstring& reg_value);
 
-	std::vector<std::filesystem::path> parseVdf(const std::filesystem::path& file_path);
+	namespace parsers {
+		std::vector<std::filesystem::path> parseVdf(const std::filesystem::path& file_path);
+		std::vector<std::filesystem::path> parseIndex(const std::filesystem::path& file_path);
+	}
 }
