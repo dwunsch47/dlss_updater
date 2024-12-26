@@ -7,3 +7,6 @@
 [submodule "dependencies/WinReg"]
 	path = dependencies/WinReg
 	url = https://github.com/GiovanniDicanio/WinReg.git
+[submodule "dependencies/json"]
+	path = dependencies/json
+	url = https://github.com/nlohmann/json.git
