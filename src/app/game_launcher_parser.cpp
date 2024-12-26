@@ -29,7 +29,7 @@ namespace glparse {
 				tmp = fileUtil::parsers::parseVdf(file_to_parse);
 				break;
 			case GameLauncher::EGS:
-				tmp = fileUtil::parsers::parseIndex(file_to_parse);
+				tmp = fileUtil::parsers::parseEgsManifests(file_to_parse);
 				break;
 			}
 			if (!tmp.empty()) {
