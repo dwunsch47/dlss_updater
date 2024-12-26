@@ -39,6 +39,9 @@
     <ClInclude Include="tests\tests.h">
       <Filter>Header Files\tests</Filter>
     </ClInclude>
+    <ClInclude Include="src\app\game_launcher_parser.h">
+      <Filter>Header Files\app</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\app\file_copy.cpp">
@@ -55,6 +58,9 @@
     </ClCompile>
     <ClCompile Include="tests\tests.cpp">
       <Filter>Source Files\tests</Filter>
+    </ClCompile>
+    <ClCompile Include="src\app\game_launcher_parser.cpp">
+      <Filter>Source Files\app</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

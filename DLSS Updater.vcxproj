@@ -21,12 +21,14 @@
   <ItemGroup>
     <ClInclude Include="src\app\file_copy.h" />
     <ClInclude Include="src\app\file_utilities.h" />
+    <ClInclude Include="src\app\game_launcher_parser.h" />
     <ClInclude Include="src\app\path_storage.h" />
     <ClInclude Include="tests\tests.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\app\file_copy.cpp" />
     <ClCompile Include="src\app\file_utilities.cpp" />
+    <ClCompile Include="src\app\game_launcher_parser.cpp" />
     <ClCompile Include="src\app\main.cpp" />
     <ClCompile Include="src\app\path_storage.cpp" />
     <ClCompile Include="tests\tests.cpp" />
