@@ -88,6 +88,7 @@ namespace fileUtil {
 		}
 		std::ifstream vdf_file(vdf_path);
 		auto root = tyti::vdf::read(vdf_file);
+		vdf_file.close();
 		if (root.name == "libraryfolders") {
 			vector<filesystem::path> result;
 			result.reserve(root.childs.size());
