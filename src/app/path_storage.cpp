@@ -1,5 +1,6 @@
 #include "path_storage.h"
 #include "file_utilities.h"
+#include "game_launcher_parser.h"
 
 #include <unordered_set>
 #include <filesystem>
@@ -99,24 +100,8 @@ void PathStorage::RemovePaths(const vector<filesystem::path>& paths_for_removal)
 }
 
 void PathStorage::ScanForGameServices() {
-	scanSteamFolder();
-	scanEGSFolder();
-}
-
-void PathStorage::scanSteamFolder() {
-	vector<filesystem::path> steam_folders = fileUtil::parseVdf(fileUtil::getPathFromRegistry(launcher_name_to_data_.at(GameLauncher::STEAM).reg_path, launcher_name_to_data_.at(GameLauncher::STEAM).reg_value));
-	if (steam_folders.empty()) {
-		return;
-	}
-	AddNewPaths(steam_folders);
-}
-
-void PathStorage::scanEGSFolder() {
-	vector<filesystem::path> egs_folders;
-	if (egs_folders.empty()) {
-		return;
-	}
-	AddNewPaths(egs_folders);
+	vector<filesystem::path> all_game_paths = glparse::parseLauncherPaths();
+	AddNewPaths(all_game_paths);
 }
 
 const unordered_set<filesystem::path>& PathStorage::GetStoredPaths() const {
