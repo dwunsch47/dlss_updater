@@ -7,6 +7,7 @@
 #include <tuple>
 
 #include <WinReg.hpp>
+#include <json.hpp>
 
 #pragma warning(push)
 #pragma warning(disable : 4996)
@@ -83,7 +84,7 @@ namespace fileUtil {
 
 	namespace parsers {
 		vector<filesystem::path> parseVdf(const filesystem::path& file_path) {
-			const filesystem::path vdf_path = file_path / LIBRARY_FOLDERS_PATH;
+			const filesystem::path vdf_path = file_path / STEAM_LIBRARYFOLDERS_PATH;
 			if (!filesystem::exists(vdf_path)) {
 				return {};
 			}
@@ -105,8 +106,20 @@ namespace fileUtil {
 			}
 		}
 
-		vector<filesystem::path> parseIndex(const filesystem::path& file_path) {
-			return {};
+		vector<filesystem::path> parseEgsManifests(const filesystem::path& file_path) {
+			vector<filesystem::path> result;
+			for (const auto& parse_path : filesystem::directory_iterator(file_path / EGS_MANIFESTS_PATH)) {
+				if (!filesystem::is_regular_file(parse_path)) {
+					continue;
+				}
+				ifstream item_file(parse_path.path());
+				nlohmann::json parsed_item = nlohmann::json::parse(item_file);
+				item_file.close();
+				if (parsed_item.find("InstallLocation") != parsed_item.end()) {
+					result.push_back(parsed_item.at("InstallLocation"));
+				}
+			}
+			return result;
 		}
 	}
 }

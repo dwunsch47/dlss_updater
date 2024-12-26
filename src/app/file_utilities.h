@@ -9,7 +9,8 @@ const std::string PATH_STORAGE_FILENAME = "dll_locations.toml";
 const std::string DLSS_DLL_NAME = "nvngx_dlss.dll";
 const std::string PROGRAM_NAME = "DLSS Updater";
 const std::string STEAM_GAMES_PATH_POSTFIX = "steamapps\\common";
-const std::string LIBRARY_FOLDERS_PATH = "steamapps\\libraryfolders.vdf";
+const std::string STEAM_LIBRARYFOLDERS_PATH = "steamapps\\libraryfolders.vdf";
+const std::string EGS_MANIFESTS_PATH = "Manifests";
 
 namespace fileUtil {
 	std::string getDLLVersion(const std::filesystem::path& file_path);
@@ -19,6 +20,6 @@ namespace fileUtil {
 
 	namespace parsers {
 		std::vector<std::filesystem::path> parseVdf(const std::filesystem::path& file_path);
-		std::vector<std::filesystem::path> parseIndex(const std::filesystem::path& file_path);
+		std::vector<std::filesystem::path> parseEgsManifests(const std::filesystem::path& file_path);
 	}
 }
