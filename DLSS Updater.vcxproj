@@ -122,7 +122,7 @@
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <AdditionalIncludeDirectories>$(ProjectDir)dependencies\toml11\single_include;$(ProjectDir)dependencies\WinReg\WinReg;$(ProjectDir)src;$(ProjectDir)dependencies\ValveFileVDF\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)dependencies\toml11\single_include;$(ProjectDir)dependencies\WinReg\WinReg;$(ProjectDir)src;$(ProjectDir)dependencies\ValveFileVDF\include;$(ProjectDir)dependencies\json\single_include\nlohmann;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
@@ -140,7 +140,7 @@
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <AdditionalIncludeDirectories>$(ProjectDir)dependencies\toml11\single_include;$(ProjectDir)dependencies\WinReg\WinReg;$(ProjectDir)src;$(ProjectDir)dependencies\ValveFileVDF\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)dependencies\toml11\single_include;$(ProjectDir)dependencies\WinReg\WinReg;$(ProjectDir)src;$(ProjectDir)dependencies\ValveFileVDF\include;$(ProjectDir)dependencies\json\single_include\nlohmann;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
