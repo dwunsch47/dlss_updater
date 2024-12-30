@@ -33,7 +33,8 @@ void TestPathStorage() {
 		fstream first_file(test_dir / DLSS_DLL_NAME, ios::out);
 		vector<filesystem::path> test_paths = { test_dir };
 
-		PathStorage test_storage(test_dir);
+		PathStorage test_storage;
+		test_storage.AddDllPath({ test_dir });
 		test_storage.AddNewPaths(test_paths);
 		assert(test_storage.GetStoredPaths().size() == test_paths.size());
 	}
@@ -47,7 +48,8 @@ void TestPathStorage() {
 		fstream first_file(test_dir / DLSS_DLL_NAME, ios::out);
 		vector<filesystem::path> test_paths = { test_dir, test_dir / DLSS_DLL_NAME };
 
-		PathStorage test_storage(test_dir);
+		PathStorage test_storage;
+		test_storage.AddDllPath({ test_dir });
 		test_storage.AddNewPaths(test_paths);
 		assert(test_storage.GetStoredPaths().size() == 1);
 	}
@@ -99,6 +101,9 @@ void TestPathStorage() {
 		test3.AddNewPaths({ current_working_dir });
 		assert(test3.GetStoredPaths().size() == (paths.size() + 2)); // because first and second tests create aditional dll's
 	}
+
+	cout << "ALL TESTS WERE COMPLETED" << endl;
+
 	filesystem::remove(curr_path_dir / PATH_STORAGE_FILENAME);
 	filesystem::remove_all(root_dir);
 

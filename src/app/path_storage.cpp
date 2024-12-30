@@ -18,16 +18,30 @@
 using namespace std;
 
 PathStorage::PathStorage() {
-	restoreSavedFilePaths();
-}
-
-PathStorage::PathStorage(filesystem::path path_to_dll) 
-	: dll_dir_path_(filesystem::is_directory(path_to_dll) ? path_to_dll : path_to_dll.parent_path()) {
-	restoreSavedFilePaths();
+	restorePathsAndConfig();
 }
 
 PathStorage::~PathStorage() {
 	savePathsAndConfig();
+}
+
+void PathStorage::AddDllPath(const vector<filesystem::path>& dll_path) {
+	if (dll_path.empty()) {
+		return;
+	}
+	const filesystem::path new_dll_path = dll_path.at(0);
+	if (filesystem::exists(new_dll_path) && (new_dll_path.filename() == DLSS_DLL_NAME)) {
+		dll_dir_path_ = new_dll_path.parent_path();
+	}
+	else if (filesystem::exists(new_dll_path / DLSS_DLL_NAME)) {
+		dll_dir_path_ = new_dll_path;
+	}
+	is_dll_dir_path_changed_ = true;
+}
+
+void PathStorage::RestoreDllPath() {
+	dll_dir_path_ = filesystem::current_path();
+	is_dll_dir_path_changed_ = false;
 }
 
 void PathStorage::AddNewPaths(const vector<filesystem::path>& new_paths) {
@@ -35,7 +49,7 @@ void PathStorage::AddNewPaths(const vector<filesystem::path>& new_paths) {
 		return;
 	}
 
-	new_paths_added_ = true;
+	stored_paths_changed_ = true;
 
 	vector<future<void>> dir_futur;
 
@@ -68,11 +82,6 @@ void PathStorage::AddNewPaths(const vector<filesystem::path>& new_paths) {
 
 #if _DEBUG
 	cout << "It added new paths. stored_paths size is " << stored_paths_.size() << endl;
-	/*cout << "Displaying contents of stored_path_to_recency_:";
-	for (const auto& [curr_disp_path, recency] : stored_path_to_recency_) {
-		cout << ' ' << curr_disp_path.string();
-	}
-	cout << endl;*/
 #endif
 }
 
@@ -94,6 +103,7 @@ void PathStorage::RemovePaths(const vector<filesystem::path>& paths_for_removal)
 
 	for (const filesystem::path& file_path : paths_for_removal) {
 		if (stored_paths_.find(file_path) != stored_paths_.end()) {
+			stored_paths_changed_ = true;
 			stored_paths_.erase(file_path);
 		}
 	}
@@ -130,60 +140,106 @@ void PathStorage::ShowStoredDllsVersions() const {
 	}
 }
 
-void PathStorage::restoreSavedFilePaths() {
+void PathStorage::restorePathsAndConfig() {
 	if (!filesystem::exists(PATH_STORAGE_FILENAME)) {
 		return;
 	}
 
-	const toml::value path_storage_file = toml::parse(PATH_STORAGE_FILENAME);
+#if _DEBUG
+	cout << "Begin restoring toml" << endl;
+#endif
 
-	if (path_storage_file.at("name").as_string() != PROGRAM_NAME) {
+	const toml::value main_toml = toml::parse(PATH_STORAGE_FILENAME);
+
+	if (main_toml.contains("name")) {
+		if (main_toml.at("name").as_string() != PROGRAM_NAME) {
+			return;
+		}
+	}
+	else {
 		return;
 	}
 
-	filesystem::path tmp_path;
-	for (const auto& file_path : path_storage_file.at("dll_paths").as_array()) {
-		tmp_path = file_path.as_string();
-		if (filesystem::exists(tmp_path / DLSS_DLL_NAME)) {
-			stored_paths_.emplace(tmp_path);
+	restorePaths(main_toml);
+	restoreConfig(main_toml);
+#if _DEBUG
+	cout << "We successfully restored toml" << endl;
+#endif
+}
+
+void PathStorage::restorePaths(const toml::value& main_toml) {
+	if (main_toml.contains("dll_paths")) {
+		filesystem::path tmp_path;
+		for (const auto& file_path : main_toml.at("dll_paths").as_array()) {
+			tmp_path = file_path.as_string();
+			if (filesystem::exists(tmp_path / DLSS_DLL_NAME)) {
+				stored_paths_.emplace(tmp_path);
+			}
 		}
 	}
-
 	
 #if _DEBUG
-	cout << "We succesfully restored paths. Current number of paths is " << stored_paths_.size() << endl;
+	cout << "We successfully restored paths. Current number of paths is " << stored_paths_.size() << endl;
+#endif
+}
+
+void PathStorage::restoreConfig(const toml::value& main_toml) {
+	if (main_toml.contains("dll_dir_path")) {
+		is_dll_dir_path_changed_ = true;
+		dll_dir_path_ = main_toml.at("dll_dir_path").as_string();
+	}
+#if _DEBUG
+	cout << "We successfully restored config" << endl;
 #endif
 }
 
 void PathStorage::savePathsAndConfig() const {
-	savePaths();
-	//saveConfig();
-}
-
-void PathStorage::savePaths() const {
-	if (stored_paths_.empty() || !new_paths_added_) {
+	if (stored_paths_.empty() && !stored_paths_changed_ && !is_dll_dir_path_changed_) {
 		return;
 	}
+
+	toml::value main_toml;
+	main_toml["name"] = PROGRAM_NAME;
+
+	savePaths(main_toml);
+	saveConfig(main_toml);
 
 	fstream dll_path_storage_file(PATH_STORAGE_FILENAME, ios::out);
 	if (!dll_path_storage_file.good()) {
 		throw runtime_error(PATH_STORAGE_FILENAME + " cannot be opened");
 	}
 
-	toml::value config_toml;
-	config_toml["name"] = PROGRAM_NAME;
+	dll_path_storage_file << toml::format(main_toml);
 
+#if _DEBUG
+	cout << "Class was stored successfully" << endl;
+#endif
+}
+
+void PathStorage::savePaths(toml::value& main_toml) const {
+	if (stored_paths_.empty() && !stored_paths_changed_) {
+		return;
+	}
 
 	toml::value path_storage_toml(toml::array{});
 	for (const auto& file_path : stored_paths_) {
-		path_storage_toml.push_back(file_path.generic_string());
+		path_storage_toml.emplace_back(file_path.generic_string());
 	}
 
-	config_toml["dll_paths"] = path_storage_toml;
-
-	dll_path_storage_file << toml::format(config_toml);
+	main_toml["dll_paths"] = path_storage_toml;
 
 #if _DEBUG
-	cout << "All paths were stored succesfully" << endl;
+	cout << "All paths were stored successfully" << endl;
+#endif
+}
+
+void PathStorage::saveConfig(toml::value& main_toml) const {
+	if (!is_dll_dir_path_changed_) {
+		return;
+	}
+	main_toml["dll_dir_path"] = dll_dir_path_.generic_string();
+
+#if _DEBUG
+	cout << "Config was stored successfully" << endl;
 #endif
 }

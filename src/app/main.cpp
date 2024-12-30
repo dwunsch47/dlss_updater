@@ -31,15 +31,17 @@ int main(int argc, char* argv[]) {
 
 	PathStorage current_storage;
 
-
 	if (mode == "scan") {
 		current_storage.ScanForGameServices();
 	}
 	else if (mode == "add") {
 		current_storage.AddNewPaths(arguments);
 	}
-	else if (mode == "path_to_dll") {
-
+	else if (mode == "dll_path") {
+		current_storage.AddDllPath(arguments);
+	}
+	else if (mode == "restore_dll_path") {
+		current_storage.RestoreDllPath();
 	}
 	else if (mode == "update") {
 		// TODO: add options to --force-update even is installed version is newer
