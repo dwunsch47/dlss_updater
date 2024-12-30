@@ -31,6 +31,7 @@ int main(int argc, char* argv[]) {
 
 	PathStorage current_storage;
 
+	//TODO: better handle user input
 	if (mode == "scan") {
 		current_storage.ScanForGameServices();
 	}
