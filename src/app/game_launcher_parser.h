@@ -9,7 +9,8 @@
 namespace glparse {
 	enum GameLauncher {
 		STEAM,
-		EGS
+		EGS,
+		GOG,
 	};
 
 	struct GameLauncherData {
@@ -18,5 +19,11 @@ namespace glparse {
 	};
 
 	std::vector<std::filesystem::path> parseLauncherPaths();
-}
+
+namespace {
+	std::vector<std::filesystem::path> parseVdf(const GameLauncherData& l_data);
+	std::vector<std::filesystem::path> parseEgsManifests(const GameLauncherData& l_data);
+	std::vector<std::filesystem::path> parseGOGReg(const GameLauncherData& l_data);
+} // namespace
+} // namespace glparse
 

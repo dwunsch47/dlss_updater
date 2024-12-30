@@ -17,9 +17,5 @@ namespace fileUtil {
 	std::tuple<int, int, int, int> formatDLLVersion(const std::string& file_version);
 
 	std::string getPathFromRegistry(const std::wstring& reg_path, const std::wstring& reg_value);
-
-	namespace parsers {
-		std::vector<std::filesystem::path> parseVdf(const std::filesystem::path& file_path);
-		std::vector<std::filesystem::path> parseEgsManifests(const std::filesystem::path& file_path);
-	}
-}
+	std::vector<std::wstring> getSubkeys(const std::wstring& reg_path);
+} // namespace fileUtil
