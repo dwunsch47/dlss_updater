@@ -10,7 +10,7 @@
 
 using namespace std;
 
-void fileCopy(const unordered_set<filesystem::path>& paths, const filesystem::path dll_path) {
+void fileCopy(const unordered_set<filesystem::path>& paths, const filesystem::path& dll_path) {
 	const tuple<int, int, int, int> dll_version = fileUtil::formatDLLVersion(fileUtil::getDLLVersion(dll_path / DLSS_DLL_NAME));
 	const uintmax_t dll_size = filesystem::file_size(dll_path / DLSS_DLL_NAME);
 

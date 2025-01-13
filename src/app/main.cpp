@@ -1,13 +1,15 @@
-#include "file_copy.h"
-#include "path_storage.h"
+#include "application.h"
 
 #include <iostream>
 #include <filesystem>
 #include <vector>
+#include <memory>
 
 #if _DEBUG
 #include "../tests/tests.h"
 #endif
+
+using namespace std;
 
 int main(int argc, char* argv[]) {
 	const std::string mode = argv[1];
@@ -29,30 +31,5 @@ int main(int argc, char* argv[]) {
 	}
 #endif
 
-	PathStorage current_storage;
-
-	//TODO: better handle user input
-	if (mode == "scan") {
-		current_storage.ScanForGameServices();
-	}
-	else if (mode == "add") {
-		current_storage.AddNewPaths(arguments);
-	}
-	else if (mode == "dll_path") {
-		current_storage.AddDllPath(arguments);
-	}
-	else if (mode == "restore_dll_path") {
-		current_storage.RestoreDllPath();
-	}
-	else if (mode == "update") {
-		// TODO: add options to --force-update even is installed version is newer
-		fileCopy(current_storage.GetStoredPaths(), current_storage.GetDLLPath());
-	}
-	// TODO: add option to --force-keep old, obsolete paths
-	else if (mode == "remove") {
-		current_storage.RemovePaths(arguments);
-	}
-	else if (mode == "show") {
-		current_storage.ShowStoredDllsVersions();
-	}
+	unique_ptr<Application> app = make_unique<Application>(argc, argv);
 }

@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\app\application.h" />
     <ClInclude Include="src\app\file_copy.h" />
     <ClInclude Include="src\app\file_utilities.h" />
     <ClInclude Include="src\app\game_launcher_parser.h" />
@@ -26,6 +27,7 @@
     <ClInclude Include="tests\tests.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\app\application.cpp" />
     <ClCompile Include="src\app\file_copy.cpp" />
     <ClCompile Include="src\app\file_utilities.cpp" />
     <ClCompile Include="src\app\game_launcher_parser.cpp" />

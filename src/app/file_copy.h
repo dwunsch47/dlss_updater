@@ -5,6 +5,6 @@
 #include <string>
 #include <tuple>
 
-void fileCopy(const std::unordered_set<std::filesystem::path>& paths, const std::filesystem::path dll_path);
+void fileCopy(const std::unordered_set<std::filesystem::path>& paths, const std::filesystem::path& dll_path);
 
 

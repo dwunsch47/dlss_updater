@@ -13,19 +13,19 @@
 using namespace std;
 
 void TestPathStorage() {
-	if (filesystem::exists(PATH_STORAGE_FILENAME) && !filesystem::exists(PATH_STORAGE_FILENAME + ".orig")) {
+	/*if (filesystem::exists(PATH_STORAGE_FILENAME) && !filesystem::exists(PATH_STORAGE_FILENAME + ".orig")) {
 		filesystem::rename(PATH_STORAGE_FILENAME, (PATH_STORAGE_FILENAME + ".orig"));
 	}
 	if (filesystem::exists(DLSS_DLL_NAME) && !filesystem::exists(DLSS_DLL_NAME + ".orig")) {
 		filesystem::rename(DLSS_DLL_NAME, (DLSS_DLL_NAME + ".orig"));
-	}
+	}*/
 	const filesystem::path curr_path_dir = filesystem::current_path();
 	const filesystem::path root_dir = curr_path_dir / "all_tests_dir";
 	const filesystem::path current_working_dir = root_dir / "test_dir";
 	filesystem::create_directories(current_working_dir);
 
 	{
-		filesystem::remove(PATH_STORAGE_FILENAME);
+		//filesystem::remove(PATH_STORAGE_FILENAME);
 		cout << "FIRST TEST" << endl;
 
 		filesystem::path test_dir = current_working_dir / "test1_dir";
@@ -34,13 +34,12 @@ void TestPathStorage() {
 		vector<filesystem::path> test_paths = { test_dir };
 
 		PathStorage test_storage;
-		test_storage.AddDllPath({ test_dir });
 		test_storage.AddNewPaths(test_paths);
 		assert(test_storage.GetStoredPaths().size() == test_paths.size());
 	}
 
 	{
-		filesystem::remove(PATH_STORAGE_FILENAME);
+		//filesystem::remove(PATH_STORAGE_FILENAME);
 		cout << "SECOND TEST" << endl;
 
 		const filesystem::path test_dir = current_working_dir / "test2_dir";
@@ -49,7 +48,6 @@ void TestPathStorage() {
 		vector<filesystem::path> test_paths = { test_dir, test_dir / DLSS_DLL_NAME };
 
 		PathStorage test_storage;
-		test_storage.AddDllPath({ test_dir });
 		test_storage.AddNewPaths(test_paths);
 		assert(test_storage.GetStoredPaths().size() == 1);
 	}
@@ -73,7 +71,7 @@ void TestPathStorage() {
 
 	{
 		cout << "FIFTH TEST AddNewPaths" << endl;
-		filesystem::remove(PATH_STORAGE_FILENAME);
+		//filesystem::remove(PATH_STORAGE_FILENAME);
 
 		filesystem::path test_dir = current_working_dir / "test5_dir";
 		filesystem::create_directory(test_dir);
@@ -104,13 +102,13 @@ void TestPathStorage() {
 
 	cout << "ALL TESTS WERE COMPLETED" << endl;
 
-	filesystem::remove(curr_path_dir / PATH_STORAGE_FILENAME);
+	//filesystem::remove(curr_path_dir / PATH_STORAGE_FILENAME);
 	filesystem::remove_all(root_dir);
 
-	if (filesystem::exists(PATH_STORAGE_FILENAME + ".orig")) {
+	/*if (filesystem::exists(PATH_STORAGE_FILENAME + ".orig")) {
 		filesystem::rename((PATH_STORAGE_FILENAME + ".orig"), PATH_STORAGE_FILENAME);
 	}
 	if (filesystem::exists(DLSS_DLL_NAME + ".orig")) {
 		filesystem::rename(DLSS_DLL_NAME + ".orig", DLSS_DLL_NAME);
-	}
+	}*/
 }

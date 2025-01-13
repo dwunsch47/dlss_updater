@@ -5,9 +5,8 @@
 #include <tuple>
 #include <vector>
 
-const std::string PATH_STORAGE_FILENAME = "dll_locations.toml";
-const std::string DLSS_DLL_NAME = "nvngx_dlss.dll";
-const std::string PROGRAM_NAME = "DLSS Updater";
+const std::string DLSS_DLL_NAME = "nvngx_dlss.dll"; // possibly move to PathStorage.h
+
 const std::string STEAM_GAMES_PATH_POSTFIX = "steamapps\\common";
 const std::string STEAM_LIBRARYFOLDERS_PATH = "steamapps\\libraryfolders.vdf";
 const std::string EGS_MANIFESTS_PATH = "Manifests";
