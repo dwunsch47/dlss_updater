@@ -12,6 +12,9 @@
 using namespace std;
 
 Application::Application(int& argc, char** argv) {
+	if (argc < 2) {
+		return;
+	}
 	restoreApplication();
 	parseCmdArgs(argc, argv);
 }
@@ -20,33 +23,8 @@ Application::~Application() {
 	saveApplication();
 }
 
-void Application::showStoredDllVers() const {
-	const auto& stored_paths = ps_ptr_->GetStoredPaths();
-	if (stored_paths.empty()) {
-		cout << "No game folders with DLSS were added. Use \"scan\" or \"add\" to add folders";
-		return;
-	}
-	if (filesystem::exists(settings_storage_.dll_path / DLSS_DLL_NAME)) {
-	//	cout << "Latest available DLSS version is: " << fileUtil::getDLLVersion(dll_dir_path_ / DLSS_DLL_NAME) << '\n';
-	}
-
-	filesystem::path full_dll_path;
-	for (const auto& file_path : stored_paths) {
-		full_dll_path = file_path / DLSS_DLL_NAME;
-		if (filesystem::exists(full_dll_path)) {
-			;
-			cout << '"' << full_dll_path.generic_string() << "\", version: " << fileUtil::getDLLVersion(full_dll_path) << "\n";
-		}
-	}
-}
-
-filesystem::path Application::getDllPath() const {
-	return settings_storage_.dll_path;
-}
-
 void Application::parseCmdArgs(int& argc, char** argv) {
 	// TODO: switch to immediate mode parser, or handle it more gracefully
-
 	const string mode = argv[1];
 	vector<filesystem::path> args;
 	if (argc > 2) {
@@ -84,6 +62,29 @@ void Application::parseCmdArgs(int& argc, char** argv) {
 	}
 }
 
+void Application::showStoredDllVers() const {
+	const auto& stored_paths = ps_ptr_->GetStoredPaths();
+	if (stored_paths.empty()) {
+		cout << "No game folders with DLSS were added. Use \"scan\" or \"add\" to add folders";
+		return;
+	}
+	if (filesystem::exists(settings_storage_.dll_path / DLSS_DLL_NAME)) {
+	//	cout << "Latest available DLSS version is: " << fileUtil::getDLLVersion(dll_dir_path_ / DLSS_DLL_NAME) << '\n';
+	}
+
+	filesystem::path full_dll_path;
+	for (const auto& file_path : stored_paths) {
+		full_dll_path = file_path / DLSS_DLL_NAME;
+		if (filesystem::exists(full_dll_path)) {
+			;
+			cout << '"' << full_dll_path.generic_string() << "\", version: " << fileUtil::getDLLVersion(full_dll_path) << "\n";
+		}
+	}
+}
+
+filesystem::path Application::getDllPath() const {
+	return settings_storage_.dll_path;
+}
 
 void Application::scanForGameServices() {
 #if _DEBUG
