@@ -91,21 +91,21 @@ filesystem::path Application::getDllPath() const {
 
 void Application::scanForGameServices() {
 #if _DEBUG
-	cout << "Began scan" << '\n';
+	cout << "Began scan" << endl;
 #endif
 	ps_ptr_->AddNewPaths(glparse::parseLauncherPaths());
 }
 
 void Application::restoreApplication() {
 #if _DEBUG
-	cout << "Restore: application" << '\n';
+	cout << "Restore: application" << endl;
 #endif
 
 	vector<filesystem::path> parsed_paths;
 
 	if (filesystem::exists(APP_CONFIG_FILENAME)) {
 #if _DEBUG
-		cout << "Restore: toml" << '\n';
+		cout << "Restore: toml" << endl;
 #endif
 		const toml::value main_toml = toml::parse(APP_CONFIG_FILENAME);
 
