@@ -63,13 +63,17 @@ void Application::parseCmdArgs(int& argc, char** argv) {
 }
 
 void Application::showStoredDllVers() const {
+	if (filesystem::exists(settings_storage_.dll_path / DLSS_DLL_NAME)) {
+		cout << "Latest available DLSS version is: " << fileUtil::getDLLVersion(settings_storage_.dll_path / DLSS_DLL_NAME) << '\n';
+	}
+	else {
+		cout << "No available DLSS dll. Add DLSS dll to current program or add path to DLSS dll's folder" << '\n';
+	}
+
 	const auto& stored_paths = ps_ptr_->GetStoredPaths();
 	if (stored_paths.empty()) {
 		cout << "No game folders with DLSS were added. Use \"scan\" or \"add\" to add folders" << "\n";
 		return;
-	}
-	if (filesystem::exists(settings_storage_.dll_path / DLSS_DLL_NAME)) {
-		cout << "Latest available DLSS version is: " << fileUtil::getDLLVersion(settings_storage_.dll_path / DLSS_DLL_NAME) << '\n';
 	}
 
 	filesystem::path full_dll_path;
