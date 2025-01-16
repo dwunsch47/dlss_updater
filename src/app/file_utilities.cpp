@@ -30,7 +30,7 @@ namespace fileUtil {
 
 		ostringstream output;
 		output << HIWORD(fileinfo->dwFileVersionMS) << '.' << LOWORD(fileinfo->dwFileVersionMS) << '.' << HIWORD(fileinfo->dwFileVersionLS) << '.' << LOWORD(fileinfo->dwFileVersionLS);
-		return move(output.str());
+		return output.str();
 	}
 
 	tuple<int, int, int, int> formatDLLVersion(const string& file_version) {
@@ -52,9 +52,7 @@ namespace fileUtil {
 		pos = file_version.find('.', prev_pos);
 		build_num_ver = stoi(file_version.substr(prev_pos, pos++ - prev_pos));
 
-		tuple<int, int, int, int> result = { major_ver, minor_ver, bug_ver, build_num_ver };
-
-		return result;
+		return { major_ver, minor_ver, bug_ver, build_num_ver };
 	}
 
 	string getPathFromRegistry(const wstring& reg_path, const wstring& reg_value) {
