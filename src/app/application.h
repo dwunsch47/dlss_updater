@@ -30,7 +30,7 @@ private:
 	std::filesystem::path getDllPath() const;
 
 	void restoreApplication();
-	void restorePathStorage(const toml::value& main_toml);
+	std::vector<std::filesystem::path> restorePathStorage(const toml::value& main_toml);
 	void restoreSettings(const toml::value& main_toml);
 
 	void saveApplication() const;

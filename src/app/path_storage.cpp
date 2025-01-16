@@ -14,11 +14,11 @@
 
 using namespace std;
 
-PathStorage::PathStorage(const vector<filesystem::path>& paths_to_restore) {
-	restorePaths(paths_to_restore);
+PathStorage::PathStorage(vector<filesystem::path> paths_to_restore) {
+	restorePaths(move(paths_to_restore));
 }
 
-void PathStorage::AddNewPaths(const vector<filesystem::path>& new_paths) {
+void PathStorage::AddNewPaths(vector<filesystem::path> new_paths) {
 	if (new_paths.empty()) {
 		return;
 	}
@@ -27,12 +27,10 @@ void PathStorage::AddNewPaths(const vector<filesystem::path>& new_paths) {
 
 	vector<future<void>> dir_futur;
 
-	for (filesystem::path file_path : new_paths) {
+	for (filesystem::path& file_path : new_paths) {
 		if (!filesystem::exists(file_path) && !filesystem::exists(file_path.parent_path()) && (file_path == filesystem::current_path())) {
 			continue;
 		}
-
-		//are_stored_paths_changed_ = true;
 
 		if (filesystem::is_regular_file(file_path)) {
 			file_path = file_path.parent_path();
@@ -43,7 +41,7 @@ void PathStorage::AddNewPaths(const vector<filesystem::path>& new_paths) {
 
 		if (filesystem::exists(file_path / DLSS_DLL_NAME)) {
 			std::lock_guard stored_paths_lock(mutex_stored_paths_);
-			stored_paths_.insert(file_path);
+			stored_paths_.insert(move(file_path));
 		}
 		else {
 			for (auto& curr_dir_path : filesystem::directory_iterator(file_path)) {
@@ -94,9 +92,9 @@ bool PathStorage::ArePathsChanged() const {
 }
 
 void PathStorage::restorePaths(vector<filesystem::path> paths_to_restore) {
-	for (filesystem::path file_path : paths_to_restore) {
+	for (filesystem::path& file_path : paths_to_restore) {
 		if (filesystem::exists(file_path / DLSS_DLL_NAME)) {
-			stored_paths_.insert(file_path);
+			stored_paths_.insert(move(file_path));
 		}
 	}
 	

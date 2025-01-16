@@ -11,9 +11,9 @@
 class PathStorage {
 public:
 	PathStorage() = default;
-	PathStorage(const std::vector<std::filesystem::path>& paths_to_restore);
+	PathStorage(std::vector<std::filesystem::path> paths_to_restore);
 
-	void AddNewPaths(const std::vector<std::filesystem::path>& new_paths);
+	void AddNewPaths(std::vector<std::filesystem::path> new_paths);
 	void RemovePaths(const std::vector<std::filesystem::path>& paths_for_removal);
 
 	const std::unordered_set<std::filesystem::path>& GetStoredPaths() const;

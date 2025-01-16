@@ -37,10 +37,10 @@ void Application::parseCmdArgs(int& argc, char** argv) {
 		scanForGameServices();
 	}
 	else if (mode == "add") {
-		ps_ptr_->AddNewPaths(args);
+		ps_ptr_->AddNewPaths(move(args));
 	}
 	else if (mode == "dll_path") {
-		settings_storage_.dll_path = args[0];
+		settings_storage_.dll_path = move(args[0]);
 		are_settings_changed_ = true;
 	}
 	else if (mode == "restore_dll_path") {
@@ -72,7 +72,7 @@ void Application::showStoredDllVers() const {
 
 	const auto& stored_paths = ps_ptr_->GetStoredPaths();
 	if (stored_paths.empty()) {
-		cout << "No game folders with DLSS were added. Use \"scan\" or \"add\" to add folders" << "\n";
+		cout << "No game folders with DLSS were added. Use \"scan\" or \"add\" to add folders" << '\n';
 		return;
 	}
 
@@ -80,7 +80,7 @@ void Application::showStoredDllVers() const {
 	for (const auto& file_path : stored_paths) {
 		full_dll_path = file_path / DLSS_DLL_NAME;
 		if (filesystem::exists(full_dll_path)) {
-			cout << '"' << full_dll_path.generic_string() << "\", version: " << fileUtil::getDLLVersion(full_dll_path) << "\n";
+			cout << '"' << full_dll_path.generic_string() << "\", version: " << fileUtil::getDLLVersion(full_dll_path) << '\n';
 		}
 	}
 }
@@ -91,21 +91,21 @@ filesystem::path Application::getDllPath() const {
 
 void Application::scanForGameServices() {
 #if _DEBUG
-	cout << "Began scan" << "\n";
+	cout << "Began scan" << '\n';
 #endif
-	vector<filesystem::path> all_game_paths = glparse::parseLauncherPaths();
-	ps_ptr_->AddNewPaths(all_game_paths);
+	ps_ptr_->AddNewPaths(glparse::parseLauncherPaths());
 }
 
 void Application::restoreApplication() {
 #if _DEBUG
-	cout << "Restore: application" << endl;
+	cout << "Restore: application" << '\n';
 #endif
 
+	vector<filesystem::path> parsed_paths;
 
 	if (filesystem::exists(APP_CONFIG_FILENAME)) {
 #if _DEBUG
-		cout << "Restore: toml" << endl;
+		cout << "Restore: toml" << '\n';
 #endif
 		const toml::value main_toml = toml::parse(APP_CONFIG_FILENAME);
 
@@ -118,16 +118,14 @@ void Application::restoreApplication() {
 			return;
 		}
 
-		restorePathStorage(main_toml);
+		parsed_paths = restorePathStorage(main_toml);
 		restoreSettings(main_toml);
 
 #if _DEBUG
 		cout << "Restore successful: toml" << endl;
 #endif
 	}
-	else {
-		ps_ptr_ = make_unique<PathStorage>();
-	}
+		ps_ptr_ = make_unique<PathStorage>(move(parsed_paths));
 
 
 #if _DEBUG
@@ -135,7 +133,7 @@ void Application::restoreApplication() {
 #endif
 }
 
-void Application::restorePathStorage(const toml::value& main_toml) {
+vector<filesystem::path> Application::restorePathStorage(const toml::value& main_toml) {
 	vector<filesystem::path> result;
 	if (main_toml.contains("dll_paths"s)) {
 		result.reserve(main_toml.at("dll_paths"s).size());
@@ -143,7 +141,7 @@ void Application::restorePathStorage(const toml::value& main_toml) {
 			result.emplace_back(path.as_string());
 		}
 	}
-	ps_ptr_ = make_unique<PathStorage>(result);
+	return result;
 }
 
 void Application::restoreSettings(const toml::value& main_toml) {
