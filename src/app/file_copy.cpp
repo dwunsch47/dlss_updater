@@ -18,10 +18,12 @@ void fileCopy(const unordered_set<filesystem::path>& paths, const filesystem::pa
 	error_code copy_ec;
 
 	tuple<int, int, int, int> file_path_version = { 0, 0, 0, 0 };
+	uintmax_t file_path_size = 0;
 	for (const auto& file_path : paths) {
 		file_path_version = fileUtil::formatDLLVersion(fileUtil::getDLLVersion(file_path / DLSS_DLL_NAME));
+		file_path_size = filesystem::file_size(file_path / DLSS_DLL_NAME);
 
-		if (dll_version > file_path_version || (dll_version == file_path_version && dll_size != filesystem::file_size(file_path / DLSS_DLL_NAME))) {
+		if (dll_version > file_path_version || (dll_version == file_path_version && dll_size != file_path_size)) {
 			filesystem::copy(DLSS_DLL_NAME, file_path, copyOptions, copy_ec);
 			if (copy_ec) {
 				cerr << "An error during copy occurred. Error info: " << copy_ec.message() << endl;

@@ -29,15 +29,15 @@ namespace glparse {
 
 		for (const auto& [name, data] : launcher_name_to_data) {
 			switch (name) {
-			case GameLauncher::STEAM:
-				tmp = parseVdf(data);
-				break;
-			case GameLauncher::EGS:
-				tmp = parseEgsManifests(data);
-				break;
-			case GameLauncher::GOG:
-				tmp = parseGOGReg(data);
-				break;
+				case GameLauncher::STEAM:
+					tmp = parseVdf(data);
+					break;
+				case GameLauncher::EGS:
+					tmp = parseEgsManifests(data);
+					break;
+				case GameLauncher::GOG:
+					tmp = parseGOGReg(data);
+					break;
 			}
 			if (!tmp.empty()) {
 				result.insert(
