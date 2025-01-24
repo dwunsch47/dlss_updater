@@ -17,7 +17,7 @@ using namespace std;
 
 namespace glparse {
 	vector<filesystem::path> parseLauncherPaths() {
-		// Yes, it's shit and shoult not be done like this
+		// Yes, it's shit and should not be done like this
 		const unordered_map<GameLauncher, GameLauncherData> launcher_name_to_data = {
 			{ GameLauncher::STEAM, { L"SOFTWARE\\Wow6432Node\\Valve\\Steam", L"InstallPath" } },
 			{ GameLauncher::EGS, { L"SOFTWARE\\WOW6432Node\\Epic Games\\EpicGamesLauncher", L"AppDataPath" }},

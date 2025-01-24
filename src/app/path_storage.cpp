@@ -44,8 +44,8 @@ void PathStorage::AddNewPaths(vector<filesystem::path> new_paths) {
 			stored_paths_.insert(move(file_path));
 		}
 		else {
-			for (auto& curr_dir_path : filesystem::directory_iterator(file_path)) {
-				dir_futur.push_back(async(launch::async, &PathStorage::checkDirectoryPath, this, curr_dir_path));
+			for (const auto& curr_dir_path : filesystem::directory_iterator(file_path)) {
+				dir_futur.emplace_back(async(launch::async, &PathStorage::checkDirectoryPath, this, curr_dir_path));
 			}
 		}
 	}
@@ -59,7 +59,7 @@ void PathStorage::AddNewPaths(vector<filesystem::path> new_paths) {
 #endif
 }
 
-void PathStorage::checkDirectoryPath(const filesystem::path& dir_path) {
+void PathStorage::checkDirectoryPath(filesystem::directory_entry dir_path) {
 	filesystem::recursive_directory_iterator recur_file_path_it(dir_path);
 	for (const filesystem::path& true_file_path : recur_file_path_it) {
 		if (filesystem::is_regular_file(true_file_path) && true_file_path.filename() == DLSS_DLL_NAME) {

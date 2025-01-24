@@ -26,5 +26,5 @@ private:
 
 	void restorePaths(std::vector<std::filesystem::path> paths_to_restore);
 
-	void checkDirectoryPath(const std::filesystem::path& dir_path);
+	void checkDirectoryPath(std::filesystem::directory_entry dir_path);
 };
