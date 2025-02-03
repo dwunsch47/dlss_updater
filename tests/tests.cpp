@@ -1,6 +1,6 @@
 #include "tests.h"
-#include "app/file_utilities.h"
-#include "app/path_storage.h"
+#include "app/utils/file_utilities.h"
+#include "app/path_storage/path_storage.h"
 
 #include <vector>
 #include <filesystem>

@@ -25,48 +25,60 @@
     <Filter Include="Source Files\tests">
       <UniqueIdentifier>{1eb7059e-df05-4ab1-a1ee-ca9ccd0c9bc3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\app\utils">
+      <UniqueIdentifier>{93e8a92e-8f87-4e21-9217-0e653d2da10f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\app\utils">
+      <UniqueIdentifier>{83d9e1d4-81e2-43f9-af17-040928c855ea}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\app\path_storage">
+      <UniqueIdentifier>{feacd47f-c48f-40f7-84ef-7d9a3d1d0381}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\app\path_storage">
+      <UniqueIdentifier>{11c9c667-fed3-465a-8254-6e3c046fa37d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\app\file_copy.h">
-      <Filter>Header Files\app</Filter>
-    </ClInclude>
-    <ClInclude Include="src\app\file_utilities.h">
-      <Filter>Header Files\app</Filter>
-    </ClInclude>
-    <ClInclude Include="src\app\path_storage.h">
-      <Filter>Header Files\app</Filter>
-    </ClInclude>
     <ClInclude Include="tests\tests.h">
       <Filter>Header Files\tests</Filter>
-    </ClInclude>
-    <ClInclude Include="src\app\game_launcher_parser.h">
-      <Filter>Header Files\app</Filter>
     </ClInclude>
     <ClInclude Include="src\app\application.h">
       <Filter>Header Files\app</Filter>
     </ClInclude>
+    <ClInclude Include="src\app\path_storage\path_storage.h">
+      <Filter>Header Files\app\path_storage</Filter>
+    </ClInclude>
+    <ClInclude Include="src\app\utils\file_copy.h">
+      <Filter>Header Files\app\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="src\app\utils\file_utilities.h">
+      <Filter>Header Files\app\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="src\app\utils\game_launcher_parser.h">
+      <Filter>Header Files\app\utils</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\app\file_copy.cpp">
-      <Filter>Source Files\app</Filter>
-    </ClCompile>
-    <ClCompile Include="src\app\file_utilities.cpp">
-      <Filter>Source Files\app</Filter>
-    </ClCompile>
     <ClCompile Include="src\app\main.cpp">
-      <Filter>Source Files\app</Filter>
-    </ClCompile>
-    <ClCompile Include="src\app\path_storage.cpp">
       <Filter>Source Files\app</Filter>
     </ClCompile>
     <ClCompile Include="tests\tests.cpp">
       <Filter>Source Files\tests</Filter>
     </ClCompile>
-    <ClCompile Include="src\app\game_launcher_parser.cpp">
-      <Filter>Source Files\app</Filter>
-    </ClCompile>
     <ClCompile Include="src\app\application.cpp">
       <Filter>Source Files\app</Filter>
+    </ClCompile>
+    <ClCompile Include="src\app\path_storage\path_storage.cpp">
+      <Filter>Source Files\app\path_storage</Filter>
+    </ClCompile>
+    <ClCompile Include="src\app\utils\file_copy.cpp">
+      <Filter>Source Files\app\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="src\app\utils\file_utilities.cpp">
+      <Filter>Source Files\app\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="src\app\utils\game_launcher_parser.cpp">
+      <Filter>Source Files\app\utils</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

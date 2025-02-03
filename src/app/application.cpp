@@ -1,8 +1,8 @@
 #include "application.h"
-#include "path_storage.h"
-#include "file_utilities.h"
-#include "game_launcher_parser.h"
-#include "file_copy.h"
+#include "path_storage/path_storage.h"
+#include "utils/file_utilities.h"
+#include "utils/game_launcher_parser.h"
+#include "utils/file_copy.h"
 
 #include <memory>
 #include <iostream>
@@ -52,6 +52,9 @@ void Application::parseCmdArgs(int& argc, char** argv) {
 	else if (mode == "update") {
 		// TODO: add options to --force-update even is installed version is newer
 		fileCopy(ps_ptr_->GetStoredPaths(), getDllPath());
+	}
+	else if (mode == "update_selected") { // it needs a better name
+
 	}
 	// TODO: add option to --force-keep old, obsolete paths
 	else if (mode == "remove") {

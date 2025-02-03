@@ -5,6 +5,7 @@
 #include <filesystem>
 #include <vector>
 #include <fstream>
+#include <future>
 
 #include <json.hpp>
 
@@ -19,37 +20,48 @@ namespace glparse {
 	vector<filesystem::path> parseLauncherPaths() {
 		// Yes, it's shit and should not be done like this
 		const unordered_map<GameLauncher, GameLauncherData> launcher_name_to_data = {
-			{ GameLauncher::STEAM, { L"SOFTWARE\\Wow6432Node\\Valve\\Steam", L"InstallPath" } },
+			{ GameLauncher::GOG, { L"SOFTWARE\\WOW6432Node\\GOG.com\\Games", L"path"}},
+			{ GameLauncher::STEAM, { L"SOFTWARE\\Wow6432Node\\Valve\\Steam", L"InstallPath" }},
 			{ GameLauncher::EGS, { L"SOFTWARE\\WOW6432Node\\Epic Games\\EpicGamesLauncher", L"AppDataPath" }},
-			{ GameLauncher::GOG, { L"SOFTWARE\\WOW6432Node\\GOG.com\\Games", L"path"}}
 		};
 
 		vector<filesystem::path> result;
-		vector<filesystem::path> tmp;
+		vector<future<void>> futurs;
+		mutex result_mutex;
 
 		for (const auto& [name, data] : launcher_name_to_data) {
-			switch (name) {
-				case GameLauncher::STEAM:
-					tmp = parseVdf(data);
-					break;
-				case GameLauncher::EGS:
-					tmp = parseEgsManifests(data);
-					break;
-				case GameLauncher::GOG:
-					tmp = parseGOGReg(data);
-					break;
-			}
-			if (!tmp.empty()) {
+			futurs.push_back(async(launch::async, [&] {
+				vector<filesystem::path> tmp = parseWrapper(name, data);
+				lock_guard result_lock(result_mutex);
 				result.insert(
 					result.end(),
 					move_iterator(tmp.begin()),
 					move_iterator(tmp.end()));
-			}
+				}));
+		}
+		for (auto& task : futurs) {
+			task.wait();
 		}
 		return result;
 	}
 
 namespace {
+	vector<filesystem::path> parseWrapper(GameLauncher g_l, const GameLauncherData& gl_d) {
+		vector<filesystem::path> result;
+		switch (g_l) {
+			case GameLauncher::STEAM:
+				result = parseVdf(gl_d);
+				break;
+			case GameLauncher::EGS:
+				result = parseEgsManifests(gl_d);
+				break;
+			case GameLauncher::GOG:
+				result = parseGOGReg(gl_d);
+				break;
+		}
+		return result;
+	}
+
 	vector<filesystem::path> parseVdf(const GameLauncherData& l_data) {
 		const filesystem::path file_path = fileUtil::getPathFromRegistry(l_data.reg_path, l_data.reg_value);
 		const filesystem::path vdf_path = file_path / STEAM_LIBRARYFOLDERS_PATH;

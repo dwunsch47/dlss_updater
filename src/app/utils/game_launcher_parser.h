@@ -21,6 +21,8 @@ namespace glparse {
 	std::vector<std::filesystem::path> parseLauncherPaths();
 
 namespace {
+	std::vector<std::filesystem::path> parseWrapper(GameLauncher g_l, const GameLauncherData& gl_d);
+
 	std::vector<std::filesystem::path> parseVdf(const GameLauncherData& l_data);
 	std::vector<std::filesystem::path> parseEgsManifests(const GameLauncherData& l_data);
 	std::vector<std::filesystem::path> parseGOGReg(const GameLauncherData& l_data);

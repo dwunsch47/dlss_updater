@@ -20,19 +20,19 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\app\application.h" />
-    <ClInclude Include="src\app\file_copy.h" />
-    <ClInclude Include="src\app\file_utilities.h" />
-    <ClInclude Include="src\app\game_launcher_parser.h" />
-    <ClInclude Include="src\app\path_storage.h" />
+    <ClInclude Include="src\app\path_storage\path_storage.h" />
+    <ClInclude Include="src\app\utils\file_copy.h" />
+    <ClInclude Include="src\app\utils\file_utilities.h" />
+    <ClInclude Include="src\app\utils\game_launcher_parser.h" />
     <ClInclude Include="tests\tests.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\app\application.cpp" />
-    <ClCompile Include="src\app\file_copy.cpp" />
-    <ClCompile Include="src\app\file_utilities.cpp" />
-    <ClCompile Include="src\app\game_launcher_parser.cpp" />
     <ClCompile Include="src\app\main.cpp" />
-    <ClCompile Include="src\app\path_storage.cpp" />
+    <ClCompile Include="src\app\path_storage\path_storage.cpp" />
+    <ClCompile Include="src\app\utils\file_copy.cpp" />
+    <ClCompile Include="src\app\utils\file_utilities.cpp" />
+    <ClCompile Include="src\app\utils\game_launcher_parser.cpp" />
     <ClCompile Include="tests\tests.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
